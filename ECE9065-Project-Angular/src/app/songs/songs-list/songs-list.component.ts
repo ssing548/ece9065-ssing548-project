@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { SongService } from '../song.service';
+import { Observable, throwError } from 'rxjs';
+import { ISong } from '../songs';
 
 @Component({
   selector: 'app-songs-list',
@@ -7,9 +10,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SongsListComponent implements OnInit {
 
-  constructor() { }
+  panelOpenState = false;
+  songs: ISong[] = [];
+  errorMessage = '';
+
+  constructor(private songService: SongService) { }
 
   ngOnInit() {
+    this.songService.getSongs().subscribe({
+      next: songs => {
+        this.songs = songs;
+      },
+      error: err => this.errorMessage = err
+    });
   }
-
+  
 }

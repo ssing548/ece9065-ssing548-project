@@ -1,0 +1,10 @@
+.search-bar{
+    padding: 10px 10px;
+    margin: 40px 370px;
+    width: 500px;
+    height: auto;
+    display: inline-block;
+    border: 1px solid #7c86bb;
+    border-radius: 4px;
+    box-sizing: border-box;
+}

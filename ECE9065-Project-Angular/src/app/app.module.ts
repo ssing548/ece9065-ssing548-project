@@ -7,6 +7,8 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatButtonModule} from '@angular/material/button';
 import { SongsListComponent } from './songs/songs-list/songs-list.component';
 import { HomeComponent } from './home/home.component';
+import {MatExpansionModule} from '@angular/material/expansion';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -19,7 +21,9 @@ import { HomeComponent } from './home/home.component';
     AppRoutingModule,
     BrowserAnimationsModule,
     MatToolbarModule,
-    MatButtonModule
+    MatButtonModule,
+    MatExpansionModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
