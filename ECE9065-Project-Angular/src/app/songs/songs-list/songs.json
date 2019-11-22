@@ -1,0 +1,41 @@
+[
+    {
+        "songID": "1",
+        "songTitle": "Deadman",
+        "artist": "john",
+        "album": "kill",
+        "year": "2000",
+        "comment": "",
+        "genre": "jazz",
+        "submittedOn": "2019-01-01",
+        "submittedBy": "davis",
+        "numberOfRatings": "24",
+        "averageRating": "3.5"
+    },
+    {
+        "songID": "1",
+        "songTitle": "Deadman",
+        "artist": "john",
+        "album": "kill",
+        "year": "2000",
+        "comment": "",
+        "genre": "jazz",
+        "submittedOn": "2019-01-01",
+        "submittedBy": "davis",
+        "numberOfRatings": "24",
+        "averageRating": "3.5"
+    },
+    {
+        "songID": "1",
+        "songTitle": "Deadman",
+        "artist": "john",
+        "album": "kill",
+        "year": "2000",
+        "comment": "",
+        "genre": "jazz",
+        "submittedOn": "2019-01-01",
+        "submittedBy": "davis",
+        "numberOfRatings": "24",
+        "averageRating": "3.5"
+    }
+]
