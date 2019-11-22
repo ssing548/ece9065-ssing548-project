@@ -6,11 +6,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatButtonModule} from '@angular/material/button';
 import { SongsListComponent } from './songs/songs-list/songs-list.component';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    SongsListComponent
+    SongsListComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
