@@ -1,6 +1,6 @@
 [
     {
-        "songID": "1",
+        "songId": "1",
         "songTitle": "low",
         "artist": "john",
         "album": "kill",
@@ -13,7 +13,7 @@
         "averageRating": "3.5"
     },
     {
-        "songID": "1",
+        "songId": "2",
         "songTitle": "high",
         "artist": "john",
         "album": "kill",
@@ -26,7 +26,7 @@
         "averageRating": "3.7"
     },
     {
-        "songID": "1",
+        "songId": "3",
         "songTitle": "middle",
         "artist": "john",
         "album": "kill",

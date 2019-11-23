@@ -1,5 +1,5 @@
 export interface ISong {
-    songID: number;
+    songId: string;
     songTitle: string;
     artist: string;
     albume: string;

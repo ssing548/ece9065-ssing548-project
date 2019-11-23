@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SongService } from '../song.service';
 import { Observable, throwError } from 'rxjs';
 import { ISong } from '../songs';
+import { ReviewComponent } from  '../../Reviews/review/review.component';
 
 @Component({
   selector: 'app-songs-list',
@@ -24,5 +25,6 @@ export class SongsListComponent implements OnInit {
       error: err => this.errorMessage = err
     });
   }
+  
   
 }
