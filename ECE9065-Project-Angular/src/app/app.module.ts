@@ -12,6 +12,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ReviewComponent } from './Reviews/review/review.component';
 import {MatCardModule} from '@angular/material/card';
 import {MatTabsModule} from '@angular/material/tabs';
+import { FormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import {MatTabsModule} from '@angular/material/tabs';
     MatExpansionModule,
     HttpClientModule,
     MatCardModule,
-    MatTabsModule
+    MatTabsModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

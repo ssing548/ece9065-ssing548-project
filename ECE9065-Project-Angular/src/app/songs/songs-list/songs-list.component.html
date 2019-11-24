@@ -1,7 +1,7 @@
 
 <div class = "search-container">
 <button mat-raised-button *ngIf = 'false'>Create Playlist</button>
-<input  class = "search-bar" placeholder="Search for Songs.." type = "text">
+<input  class = "search-bar" placeholder="Search for Songs.." type = "text"  [(ngModel)]='songSearchBy'> 
 <button mat-raised-button *ngIf = 'false'>Upload new Song</button>
 </div>
 
@@ -11,7 +11,7 @@
 
     <mat-expansion-panel (opened)="panelOpenState = true"
                          (closed)="panelOpenState = false"
-                         *ngFor='let song of songs'>
+                         *ngFor='let song of searchedSongs'>
       <mat-expansion-panel-header  >
         <mat-panel-title class="title">
           {{ song.songTitle }}
