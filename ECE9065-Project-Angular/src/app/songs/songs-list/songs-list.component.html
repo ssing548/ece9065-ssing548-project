@@ -1,26 +1,38 @@
 
+<div class = "search-container">
+<button mat-raised-button *ngIf = 'false'>Create Playlist</button>
 <input  class = "search-bar" placeholder="Search for Songs.." type = "text">
+<button mat-raised-button *ngIf = 'false'>Upload new Song</button>
+</div>
 
+
+<div>  
 <mat-accordion>
 
     <mat-expansion-panel (opened)="panelOpenState = true"
                          (closed)="panelOpenState = false"
                          *ngFor='let song of songs'>
       <mat-expansion-panel-header  >
-        <mat-panel-title>
-          Title:{{ song.songTitle }}
+        <mat-panel-title class="title">
+          {{ song.songTitle }}
+      
+
         </mat-panel-title>
         <mat-panel-description>
-        
+           
         </mat-panel-description>
       </mat-expansion-panel-header>
-      <p>Album:{{ song.album }}</p>
-      <p>Year:{{ song.year }}</p>
-      <p>songID:{{ song.songId }}</p>
+      <span><label>Album:</label>{{ song.album }}</span>
+      <span><label>Artist:</label>{{ song.artist }}</span>
+      <span><label>Year:</label>{{ song.year }}</span>
+      <span><label>Genre:</label>{{ song.genre }}</span>
      
       <app-review [songId] = 'song.songId'></app-review>
-      
+      <mat-action-row *ngIf = 'false'>
+          <button mat-button>Add Review</button>
+        </mat-action-row>
     </mat-expansion-panel>
     
   </mat-accordion>
   
+</div>

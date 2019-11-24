@@ -1,10 +1,33 @@
+.search-container{
+    width:fit-content;
+    margin: auto;
+    
+}
+
 .search-bar{
     padding: 10px 10px;
-    margin: 40px 370px;
+    margin: 40px 30px;
     width: 500px;
     height: auto;
     display: inline-block;
     border: 1px solid #7c86bb;
     border-radius: 4px;
     box-sizing: border-box;
+}
+.title{
+    font-weight: 500;
+    font-size: 23px;
+    font-family: monospace;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: black;
+}
+span{
+    font-size: 20px;
+    padding-right: 40px;
+    font-family: sans-serif;
+}
+label{
+    font-weight: 600;
+    padding-right: 5px;
 }

@@ -1,3 +1,7 @@
-<mat-card  *ngFor='let review of reviews'>
-{{review.reviewDesc}},{{songId}}    
-</mat-card>
+<hr>
+<h4>Reviews</h4>
+<div class = "review-container" *ngFor='let review of reviews'>
+<div class = "inline-show"><p>{{review.reviewDesc}}</p></div>
+<div class = "inline-show ">Rating container</div> 
+</div >
+ 
