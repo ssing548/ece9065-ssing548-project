@@ -9,17 +9,20 @@ import { SongsListComponent } from './songs/songs-list/songs-list.component';
 import { HomeComponent } from './home/home.component';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { HttpClientModule } from '@angular/common/http';
-import { ReviewComponent } from './Reviews/review/review.component';
+import { ReviewComponent , AddReviewDialog } from './Reviews/review/review.component';
 import {MatCardModule} from '@angular/material/card';
 import {MatTabsModule} from '@angular/material/tabs';
 import { FormsModule} from '@angular/forms';
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatInputModule} from '@angular/material/input';
 
 @NgModule({
   declarations: [
     AppComponent,
     SongsListComponent,
     HomeComponent,
-    ReviewComponent
+    ReviewComponent,
+    AddReviewDialog
   ],
   imports: [
     BrowserModule,
@@ -31,9 +34,13 @@ import { FormsModule} from '@angular/forms';
     HttpClientModule,
     MatCardModule,
     MatTabsModule,
-    FormsModule
+    FormsModule,
+    MatDialogModule,
+    MatInputModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [ReviewComponent, AddReviewDialog],
+ 
 })
 export class AppModule { }

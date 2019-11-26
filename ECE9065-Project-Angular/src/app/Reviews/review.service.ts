@@ -8,6 +8,7 @@ import { catchError, tap, map, filter } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class ReviewService {
+  
   private songUrl = 'assets/reviews.json';
 
   constructor(private http: HttpClient) { }
@@ -20,6 +21,10 @@ export class ReviewService {
        map(data => data.sort((a, b) => new Date(b.submittedOn).getTime() - new Date(a.submittedOn).getTime()))
        
       );
+  }
+
+  addNewReview(newReview: IReview) {
+    console.log("Method not implemented.");
   }
 }
 

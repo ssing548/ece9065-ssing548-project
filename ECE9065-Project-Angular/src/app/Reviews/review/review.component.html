@@ -4,4 +4,7 @@
 <div class = "inline-show"><p>{{review.reviewDesc}}</p></div>
 <div class = "inline-show ">Rating container</div> 
 </div >
- 
+
+<mat-action-row *ngIf = 'false'>
+        <button mat-raised-button  (click)="openDialog()" >Add Review</button>
+</mat-action-row>

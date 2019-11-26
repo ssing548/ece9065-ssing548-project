@@ -1,0 +1,15 @@
+<h1 mat-dialog-title>Reviews this Song!</h1>
+<div mat-dialog-content>
+  <p>What do you think?</p>
+  <mat-form-field class="example-full-width">
+      <textarea matInput placeholder="Leave a comment" [(ngModel)]="data.reviewText"></textarea>
+</mat-form-field>
+    <mat-form-field class="example-full-width">
+        <input matInput type = number placeholder="Rating" [(ngModel)]="data.rating">
+      </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
+</div>
+
