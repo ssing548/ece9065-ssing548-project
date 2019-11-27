@@ -5,7 +5,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatButtonModule} from '@angular/material/button';
-import { SongsListComponent } from './songs/songs-list/songs-list.component';
+import { SongsListComponent , ShowPlayListDialog } from './songs/songs-list/songs-list.component';
 import { HomeComponent } from './home/home.component';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { HttpClientModule } from '@angular/common/http';
@@ -15,6 +15,7 @@ import {MatTabsModule} from '@angular/material/tabs';
 import { FormsModule} from '@angular/forms';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatInputModule} from '@angular/material/input';
+import {MatSelectModule} from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import {MatInputModule} from '@angular/material/input';
     SongsListComponent,
     HomeComponent,
     ReviewComponent,
-    AddReviewDialog
+    AddReviewDialog,
+    ShowPlayListDialog
   ],
   imports: [
     BrowserModule,
@@ -36,11 +38,11 @@ import {MatInputModule} from '@angular/material/input';
     MatTabsModule,
     FormsModule,
     MatDialogModule,
-    MatInputModule
+    MatInputModule,
+    MatSelectModule
   ],
   providers: [],
   bootstrap: [AppComponent],
-  entryComponents: [ReviewComponent, AddReviewDialog],
- 
+  entryComponents: [ReviewComponent, AddReviewDialog,SongsListComponent , ShowPlayListDialog] 
 })
 export class AppModule { }

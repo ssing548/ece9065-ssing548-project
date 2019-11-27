@@ -1,0 +1,21 @@
+[
+    {
+        "listId": "l1",
+        "listTitle": "Popular",
+        "listDesc": "These are the popular songs",
+        "createdOn": "2019-02-02",
+        "createdBy": "sumeet",
+        "visibility": "true",
+        "songs": ["1","2","3"]
+    },
+
+    {
+        "listId": "l2",
+        "listTitle": "Trending",
+        "listDesc": "These are the trending songs",
+        "createdOn": "2019-02-02",
+        "createdBy": "ABC",
+        "visibility": "true",
+        "songs": ["2","3"]
+    }
+]
