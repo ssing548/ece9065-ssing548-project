@@ -8,6 +8,9 @@ import { catchError, tap, map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class SongService {
+  addNewSong(newSong: import("./songs-list/songs-list.component").AddNewSongDialogData) {
+    console.log("Method not implemented."+newSong);
+  }
   private songUrl = 'assets/songs.json';
 
   constructor(private http: HttpClient) { }

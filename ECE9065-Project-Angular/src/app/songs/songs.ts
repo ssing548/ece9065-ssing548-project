@@ -2,12 +2,12 @@ export interface ISong {
     songId: string;
     songTitle: string;
     artist: string;
-    albume: string;
+    album: string;
     year: number;
-    commente: string;
-    genree: string;
+    comment: string;
+    genre: string;
     submittedOn: Date;
     submittedBy: Date;
     numberOfRatings: number;
-    averageRating;
+    averageRating:number;
 }

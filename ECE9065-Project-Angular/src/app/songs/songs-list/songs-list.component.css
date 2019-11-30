@@ -1,7 +1,6 @@
-.search-container{
+.container{
     width:fit-content;
     margin: auto;
-    
 }
 
 .search-bar{
@@ -30,4 +29,8 @@ span{
 label{
     font-weight: 600;
     padding-right: 5px;
+}
+
+.song-upload-button{
+    margin:10px 10px;
 }

@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Inject } from '@angular/core';
 import { ReviewService } from '../review.service';
 import { Observable, throwError } from 'rxjs';
 import { IReview } from '../review';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 export interface AddReviewDialogData {
   reviewText: string;
@@ -15,35 +15,36 @@ export interface AddReviewDialogData {
   styleUrls: ['./review.component.css']
 })
 export class ReviewComponent implements OnInit {
-  @Input() songId="";
+  @Input() songId = "";
+  @Input() isAuth;
   reviews: IReview[] = [];
   errorMessage = '';
 
   reviewText: string = "";
-  rating: number ;
+  rating: number;
 
-  constructor(private reviewService:ReviewService,public dialog: MatDialog) { }
+  constructor(private reviewService: ReviewService, public dialog: MatDialog) { }
 
   openDialog(): void {
     console.log(this.songId);
     const dialogRef = this.dialog.open(AddReviewDialog, {
-      
+
       width: '290px',
-     data: {rating: this.rating }
+      data: { rating: this.rating }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
       this.reviewText = result.reviewText;
       this.rating = result.rating;
-      console.log( this.reviewText+this.rating);
+      console.log(this.reviewText + this.rating);
       this.addReview();
     });
 
-    
+
   }
 
-  addReview(){
+  addReview() {
 
     var newReview: IReview = {
       reviewId: "",
@@ -77,7 +78,7 @@ export class AddReviewDialog {
 
   constructor(
     public dialogRef: MatDialogRef<AddReviewDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: AddReviewDialogData) {}
+    @Inject(MAT_DIALOG_DATA) public data: AddReviewDialogData) { }
 
   onNoClick(): void {
     this.dialogRef.close();

@@ -1,12 +1,14 @@
-<div class="search-container">
+<div class="container">
   <button mat-raised-button *ngIf='false'>Create Playlist</button>
   <input class="search-bar" placeholder="Search for Songs,Playlists.." type="text" [(ngModel)]='songSearchBy'>
-  <button mat-raised-button *ngIf='false'>Upload new Song</button>
+  
 </div>
 
 <mat-tab-group (selectedTabChange)="onPlaylistPanelSelected($event)">
   <mat-tab label="Songs">
-
+    <div class="container"> 
+    <button mat-raised-button class = "song-upload-button" *ngIf='isAuth' (click) = "showAddSongDialog()">Upload new Song</button>
+    </div>
     <div>
       <mat-accordion>
 
@@ -25,7 +27,7 @@
           <span><label>Year:</label>{{ song.year }}</span>
           <span><label>Genre:</label>{{ song.genre }}</span>
 
-          <app-review [songId]='song.songId'></app-review>
+          <app-review [songId]='song.songId'  [isAuth]='isAuth'></app-review>
 
         </mat-expansion-panel>
 
