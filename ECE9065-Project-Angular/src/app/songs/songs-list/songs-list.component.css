@@ -34,3 +34,7 @@ label{
 .song-upload-button{
     margin:10px 10px;
 }
+
+.card-container{
+    cursor: pointer;
+}

@@ -1,9 +1,9 @@
 export interface IPlaylist {
     listId: string,
-    listTitle: string
+    listTitle: string,
     listDesc: string,
     createdOn: Date,
-    createdBy: string
+    createdBy: string,
     visibility: boolean,
-    songs: String[],
+    songs: string[]
 }

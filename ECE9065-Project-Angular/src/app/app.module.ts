@@ -15,8 +15,10 @@ import {MatTabsModule} from '@angular/material/tabs';
 import { FormsModule} from '@angular/forms';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatInputModule} from '@angular/material/input';
-import {MatSelectModule} from '@angular/material/select';
-
+import { MatSelectModule } from '@angular/material/select';
+import { CreateNewPlaylistDialog } from './playlists/createPlaylist/new-playlist-dialog'
+import {MatListModule} from '@angular/material/list';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
 @NgModule({
   declarations: [
     AppComponent,
@@ -25,7 +27,8 @@ import {MatSelectModule} from '@angular/material/select';
     ReviewComponent,
     AddReviewDialog,
     ShowPlayListDialog,
-    AddNewSongDialog
+    AddNewSongDialog,
+    CreateNewPlaylistDialog
   ],
   imports: [
     BrowserModule,
@@ -40,10 +43,12 @@ import {MatSelectModule} from '@angular/material/select';
     FormsModule,
     MatDialogModule,
     MatInputModule,
-    MatSelectModule
+    MatSelectModule,
+    MatListModule,
+    MatButtonToggleModule
   ],
   providers: [],
   bootstrap: [AppComponent],
-  entryComponents: [ReviewComponent, AddReviewDialog,SongsListComponent , ShowPlayListDialog,AddNewSongDialog] 
+  entryComponents: [ReviewComponent, AddReviewDialog,SongsListComponent , ShowPlayListDialog,AddNewSongDialog,CreateNewPlaylistDialog] 
 })
 export class AppModule { }

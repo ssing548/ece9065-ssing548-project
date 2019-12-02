@@ -1,5 +1,5 @@
 <div class="container">
-  <button mat-raised-button *ngIf='false'>Create Playlist</button>
+ 
   <input class="search-bar" placeholder="Search for Songs,Playlists.." type="text" [(ngModel)]='songSearchBy'>
   
 </div>
@@ -35,13 +35,20 @@
     </div>
   </mat-tab>
   <mat-tab label="Playlist"> 
-    <mat-card  *ngFor='let playlist of playlists' (click) = "showPlaylistDialog($event,playlist.listId)">
-      <mat-card-title class= 'title'>{{playlist.listTitle}}</mat-card-title>
+      <div class="container"> 
+      <button mat-raised-button class = "song-upload-button" *ngIf='isAuth' (click) = "showCreatePlaylistDialog('create',null)">Create Playlist</button>
+      </div>
+     
+    <mat-card  *ngFor='let playlist of playlists' >
+      <div class = "card-container" (click) = "showPlaylistDialog($event,playlist.listId)"><mat-card-title class= 'title'>{{playlist.listTitle}}</mat-card-title>
       <mat-card-subtitle>{{playlist.listDesc}}</mat-card-subtitle>
       <mat-card-content>
       <span><label>Songs#</label> {{playlist.songs.length}}</span>
       <span><label>Created By:</label>{{ playlist.createdBy}}</span>   
-    </mat-card-content>  
+    </mat-card-content>  </div>
+    <mat-card-actions>
+      <button mat-raised-button *ngIf='isAuth' (click) = "showCreatePlaylistDialog('edit',playlist.listId)">Edit</button>
+    </mat-card-actions>
     </mat-card>
   </mat-tab>
 </mat-tab-group>

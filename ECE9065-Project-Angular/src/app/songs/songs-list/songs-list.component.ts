@@ -8,7 +8,8 @@ import { ReviewComponent } from '../../Reviews/review/review.component';
 import { MatTabChangeEvent } from '@angular/material';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-
+import { CreateNewPlaylistDialog } from '../../playlists/createPlaylist/new-playlist-dialog'
+import { INewPlaylistData } from '../../playlists/createPlaylist/new-playlist-data';
 export interface PlaylistDialogData {
   playlist: IPlaylist,
   songs: ISong[]
@@ -38,8 +39,10 @@ export class SongsListComponent implements OnInit {
   errorMessage = '';
   selected = 'songs';
   isAuth:boolean;
+  songsInPlaylist: ISong[] = [];
+  
 
-   newSong:AddNewSongDialogData={
+  newSong:AddNewSongDialogData={
     songId : "",
     songTitle: "",
     artist: "",
@@ -47,8 +50,7 @@ export class SongsListComponent implements OnInit {
     year: 2019,
     comment: "",
     genre: ""
-
-  }; 
+}; 
 
   constructor(private songService: SongService, private playlistService: PlaylistService,
     public dialog: MatDialog,private route: ActivatedRoute) { 
@@ -74,12 +76,7 @@ export class SongsListComponent implements OnInit {
 
   showPlaylistDialog(event: Event, listId: string): void {
     //console.log(this.song);
-    var plist;
-    for (var i = 0; i < this.playlists.length; i++) {
-      if (this.playlists[i].listId === listId)
-        plist = this.playlists[i];
-
-    }
+    var plist = this.getListbyId(listId);
     var plsongs: ISong[] = [];
     for (var i = 0; i < plist.songs.length; i++) {
       plsongs.push(this.getSongById(plist.songs[i]))
@@ -103,7 +100,13 @@ export class SongsListComponent implements OnInit {
     });
 
   }
+  getListbyId(listId:string){
+    for (var i = 0; i < this.playlists.length; i++) {
+      if (this.playlists[i].listId === listId)
+          return this.playlists[i];
 
+    }
+  }
   getSongById(songId: String): ISong {
     for (var i = 0; i < this.songs.length; i++) {
       if (this.songs[i].songId == songId) {
@@ -128,6 +131,54 @@ export class SongsListComponent implements OnInit {
     });
 
   }
+
+  showCreatePlaylistDialog(action:string,listId: string){
+    if(action == 'create'){
+    var newPlaylist:IPlaylist = {
+      listId: "",
+      listTitle: "",
+      listDesc: "",
+      createdOn: new Date(),
+      createdBy: "",
+      visibility: true,
+      songs: []
+    };
+
+    var allSongs:ISong[] = Object.assign([], this.songs);
+    var playlistSongs:ISong[] = Object.assign([],this.songsInPlaylist);
+  }
+    else{
+      var newPlaylist:IPlaylist = this.getListbyId(listId);
+      
+      var playlistSongs:ISong[]  = [];
+      for (var i = 0; i < newPlaylist.songs.length; i++) {
+        playlistSongs.push(this.getSongById(newPlaylist.songs[i]))
+      }
+
+      var allSongs:ISong[] = Object.assign([], this.songs);
+      for (var i = 0; i < newPlaylist.songs.length; i++)
+        allSongs.splice(allSongs.findIndex( x => x.songId == newPlaylist.songs[i]),1);
+
+
+    }
+
+    const dialogRef = this.dialog.open(CreateNewPlaylistDialog, {
+      height: '400px',
+      width: '600px',
+       data: {
+        availableSongs: allSongs,
+        playlistInfo: newPlaylist,
+        songsInPlaylist: playlistSongs
+       }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+    
+    });
+
+    
+}
   ngOnInit() {
 
     this.route.params.subscribe(params => {
