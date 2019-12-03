@@ -1,29 +1,14 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { SongService } from '../song.service';
 import { PlaylistService } from '../../playlists/playlist.service';
-import { Observable, throwError } from 'rxjs';
 import { ISong } from '../songs';
 import { IPlaylist } from '../../playlists/playlist';
-import { ReviewComponent } from '../../Reviews/review/review.component';
 import { MatTabChangeEvent } from '@angular/material';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { CreateNewPlaylistDialog } from '../../playlists/createPlaylist/new-playlist-dialog'
-import { INewPlaylistData } from '../../playlists/createPlaylist/new-playlist-data';
-export interface PlaylistDialogData {
-  playlist: IPlaylist,
-  songs: ISong[]
-}
-
-export interface AddNewSongDialogData{
-  songId: string;
-  songTitle: string;
-  artist: string;
-  album: string;
-  year: number;
-  comment: string;
-  genre: string;
-}
+import { AddNewSongDialog } from '../add-new-song/add-song-dialog';
+import { ShowPlayListDialog } from '../../playlists/viewPlaylist/show-playlist-dialog';
 
 @Component({
   selector: 'app-songs-list',
@@ -41,17 +26,6 @@ export class SongsListComponent implements OnInit {
   isAuth:boolean;
   songsInPlaylist: ISong[] = [];
   
-
-  newSong:AddNewSongDialogData={
-    songId : "",
-    songTitle: "",
-    artist: "",
-    album: "",
-    year: 2019,
-    comment: "",
-    genre: ""
-}; 
-
   constructor(private songService: SongService, private playlistService: PlaylistService,
     public dialog: MatDialog,private route: ActivatedRoute) { 
       // console.log( "param"+this.route.snapshot.queryParamMap.get("flag"));
@@ -91,13 +65,13 @@ export class SongsListComponent implements OnInit {
       }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    //dialogRef.afterClosed().subscribe(result => {
       // console.log('The dialog was closed');
       // this.reviewText = result.reviewText;
       // this.rating = result.rating;
       // console.log( this.reviewText+this.rating);
      // this.addReview();
-    });
+    //});
 
   }
   getListbyId(listId:string){
@@ -117,18 +91,31 @@ export class SongsListComponent implements OnInit {
   }
 
   showAddSongDialog(){
+    var newSong:ISong = {
+      songId: "",
+      songTitle: "",
+      artist: "",
+      album: "",
+      year: 2019,
+      comment: "",
+      genre: "",
+      submittedOn: new Date(),
+      submittedBy: "",
+      numberOfRatings: 0 ,
+      averageRating:0 
+  }; 
     const dialogRef = this.dialog.open(AddNewSongDialog, {
       width: '400px',
        data: {
-        newSong:this.newSong  
+        newSong: newSong  
        }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(this.newSong);
-      this.songService.addNewSong(this.newSong);
+    // dialogRef.afterClosed().subscribe(result => {
+    //   console.log(this.newSong);
+    //   this.songService.addNewSong(this.newSong);
 
-    });
+    // });
 
   }
 
@@ -180,8 +167,7 @@ export class SongsListComponent implements OnInit {
     
 }
   ngOnInit() {
-
-    this.route.params.subscribe(params => {
+      this.route.params.subscribe(params => {
       this.isAuth = params['flag']; // (+) converts string 'id' to a number
       console.log(this.isAuth)
       // In a real app: dispatch action to load the details here.
@@ -212,34 +198,5 @@ export class SongsListComponent implements OnInit {
 
 }
 
-@Component({
-  selector: 'show-playlist-dialog',
-  templateUrl: '../../playlists/show-playlist-dialog.html',
-})
-export class ShowPlayListDialog {
 
-  constructor(
-    public dialogRef: MatDialogRef<ShowPlayListDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: PlaylistDialogData) { }
 
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-
-}
-
-@Component({
-  selector: 'show-addSong-dialog',
-  templateUrl: '../add-song-dialog.html',
-})
-export class AddNewSongDialog {
-
-  constructor(
-    public dialogRef: MatDialogRef<AddNewSongDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: AddNewSongDialogData) { }
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-
-}

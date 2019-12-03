@@ -2,7 +2,9 @@
 <h4>Reviews</h4>
 <div class = "review-container" *ngFor='let review of reviews'>
 <div class = "inline-show"><p>{{review.reviewDesc}}</p></div>
-<div class = "inline-show ">Rating container</div> 
+<div class = "inline-show ">
+<star-rating [value] = 'review.rating' checkedcolor="black" uncheckedcolor="white" size="24px"    readonly="true" (rate)="onRate($event)"></star-rating>
+</div> 
 </div >
 
 <mat-action-row *ngIf = 'isAuth'>

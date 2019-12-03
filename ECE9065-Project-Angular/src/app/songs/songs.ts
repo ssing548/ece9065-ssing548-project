@@ -7,7 +7,7 @@ export interface ISong {
     comment: string;
     genre: string;
     submittedOn: Date;
-    submittedBy: Date;
+    submittedBy: String;
     numberOfRatings: number;
     averageRating:number;
 }

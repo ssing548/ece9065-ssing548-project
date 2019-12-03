@@ -5,11 +5,14 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatButtonModule} from '@angular/material/button';
-import { SongsListComponent , ShowPlayListDialog, AddNewSongDialog } from './songs/songs-list/songs-list.component';
+import { SongsListComponent } from './songs/songs-list/songs-list.component';
+import { ShowPlayListDialog } from './playlists/viewPlaylist/show-playlist-dialog';
+import { AddNewSongDialog } from './songs/add-new-song/add-song-dialog';
 import { HomeComponent } from './home/home.component';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { HttpClientModule } from '@angular/common/http';
-import { ReviewComponent , AddReviewDialog } from './Reviews/review/review.component';
+import { ReviewComponent } from './Reviews/review/review.component';
+import { AddReviewDialog } from './Reviews/add-review/add-new-review';
 import {MatCardModule} from '@angular/material/card';
 import {MatTabsModule} from '@angular/material/tabs';
 import { FormsModule} from '@angular/forms';
@@ -19,6 +22,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { CreateNewPlaylistDialog } from './playlists/createPlaylist/new-playlist-dialog'
 import {MatListModule} from '@angular/material/list';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import { RatingModule } from 'ng-starrating';
 @NgModule({
   declarations: [
     AppComponent,
@@ -45,7 +49,8 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
     MatInputModule,
     MatSelectModule,
     MatListModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    RatingModule
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -24,6 +24,7 @@ export class ReviewService {
   }
 
   addNewReview(newReview: IReview) {
+    console.log(newReview);
     console.log("Method not implemented.");
   }
 }
