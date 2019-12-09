@@ -2,6 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { IPlaylist } from '../playlist';
 import { ISong } from '../../songs/songs';
 import { INewPlaylistData } from './new-playlist-data';
+import { PlaylistService } from '../playlist.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 
@@ -27,7 +28,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
       song.songTitle.toLocaleLowerCase().indexOf(searchBy) !== -1);
   }
     constructor(
-      public dialogRef: MatDialogRef<CreateNewPlaylistDialog>,
+      public dialogRef: MatDialogRef<CreateNewPlaylistDialog>,private playlistService:PlaylistService,
       @Inject(MAT_DIALOG_DATA) public data: INewPlaylistData) { }
   
     onNoClick(): void {
@@ -50,6 +51,49 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
      // this.searchedSongs = this.data.availableSongs;
       this.searchedSongs = this.performSearch(this.songSearchBy);
     }
+    save(){
+      if(this.data.action == 'create'){
+      this.playlistService.addPlaylist(this.data.playlistInfo).subscribe(data => {
+        if (data) {
+         var createdPlaylist:IPlaylist = {
+          listId: data.listId,
+          listTitle: data.listTitle,
+          listDesc: data.listDesc,
+          createdOn: data.createdOn,
+          createdBy: data.createdBy,
+          visibility:data.visibility,
+          songs: data.songs
+         }
+       this.data.playlists.push(createdPlaylist);
+        }
 
+      }, error => {
+
+        console.log(JSON.stringify(error.error.details[0].message));
+      });
+    }else{
+      var listId = this.data.playlistInfo.listId;
+      this.playlistService.editPlaylist(this.data.playlistInfo).subscribe(res => {
+        if (res) {
+        //  var createdPlaylist:IPlaylist = {
+        //   listId: data.listId,
+        //   listTitle: data.listTitle,
+        //   listDesc: data.listDesc,
+        //   createdOn: data.createdOn,
+        //   createdBy: data.createdBy,
+        //   visibility:data.visibility,
+        //   songs: data.songs
+        //  }
+         this.data.playlists.splice(this.data.playlists.findIndex(x => x.listId == listId),1)[0];
+        this.data.playlists.push(this.data.playlistInfo);
+        }
+
+      }, error => {
+
+        console.log(JSON.stringify(error.error.details[0].message));
+      });
+    }
+    
+    }
 
   }

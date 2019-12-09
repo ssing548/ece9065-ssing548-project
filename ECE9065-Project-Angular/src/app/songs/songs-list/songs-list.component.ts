@@ -156,7 +156,9 @@ export class SongsListComponent implements OnInit {
        data: {
         availableSongs: allSongs,
         playlistInfo: newPlaylist,
-        songsInPlaylist: playlistSongs
+        songsInPlaylist: playlistSongs,
+        playlists:this.playlists,
+        action:action
        }
     });
 

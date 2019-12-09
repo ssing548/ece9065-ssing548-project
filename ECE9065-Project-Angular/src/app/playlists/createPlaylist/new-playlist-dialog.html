@@ -38,5 +38,5 @@
 </mat-dialog-content>
 <div mat-dialog-actions>
     <button mat-button (click)="onNoClick()">Cancel</button>
-    <button mat-button [mat-dialog-close]="data" >Ok</button>
+    <button mat-button [mat-dialog-close]="data"(click) = "save()" >Ok</button>
 </div>

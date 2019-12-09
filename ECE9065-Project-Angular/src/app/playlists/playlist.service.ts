@@ -8,13 +8,20 @@ import { catchError, tap, map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class PlaylistService {
+  editPlaylist(playlistInfo: IPlaylist):Observable<any>  {
+    return this.http.post('http://localhost:3000/auth/playlist/editplaylist',playlistInfo);
+  }
+  
+  addPlaylist(playlistInfo: IPlaylist):Observable<any>  {
+    return this.http.put('http://localhost:3000/auth/playlist/addplaylist',playlistInfo);
+  }
 
   private playlistUrl = 'assets/playlists.json';
 
   constructor(private http: HttpClient) { }
 
   getPlaylists(): Observable<IPlaylist[]>{
-    return this.http.get<IPlaylist[]>(this.playlistUrl)
+    return this.http.get<IPlaylist[]>('http://localhost:3000/auth/playlist/getplaylists')
       .pipe(
         tap(data => console.log('All: ' + JSON.stringify(data)))
        

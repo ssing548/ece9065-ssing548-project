@@ -42,7 +42,8 @@ export class ReviewComponent implements OnInit {
     const dialogRef = this.dialog.open(AddReviewDialog, {
 
       width: '290px',
-      data: { newReview: newReview }
+      data: { newReview: newReview,
+              allReviews: this.reviews }
     });
 
     // dialogRef.afterClosed().subscribe(result => {

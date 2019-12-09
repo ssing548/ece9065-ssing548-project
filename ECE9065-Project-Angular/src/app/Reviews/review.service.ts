@@ -13,8 +13,17 @@ export class ReviewService {
 
   constructor(private http: HttpClient) { }
 
+  // getReviews(songId:String): Observable<IReview[]>{
+  //   return this.http.get<IReview[]>('http://localhost:3000/auth/review/getreviews')
+  //     .pipe(
+  //       tap(data => console.log('All: ' + JSON.stringify(data))),
+  //      map(data => data.filter( data  => data.songId == songId)),
+  //      map(data => data.sort((a, b) => new Date(b.submittedOn).getTime() - new Date(a.submittedOn).getTime()))
+       
+  //     );
+  // }
   getReviews(songId:String): Observable<IReview[]>{
-    return this.http.get<IReview[]>(this.songUrl)
+    return this.http.get<IReview[]>('http://localhost:3000/auth/review/getreviews')
       .pipe(
         tap(data => console.log('All: ' + JSON.stringify(data))),
        map(data => data.filter( data  => data.songId == songId)),
@@ -22,10 +31,9 @@ export class ReviewService {
        
       );
   }
-
-  addNewReview(newReview: IReview) {
+  addNewReview(newReview: IReview):Observable<any> {
     console.log(newReview);
-    console.log("Method not implemented.");
+    return this.http.put('http://localhost:3000/auth/review/addreview',newReview);
   }
 }
 

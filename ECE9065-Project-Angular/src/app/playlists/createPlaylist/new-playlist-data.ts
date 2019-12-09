@@ -4,6 +4,8 @@ import { ISong } from '../../songs/songs';
 export interface INewPlaylistData{
     playlistInfo: IPlaylist,
     songsInPlaylist: ISong[],
-    availableSongs:ISong[]
+    availableSongs:ISong[],
+    playlists:IPlaylist[],
+    action:String
 
 }
