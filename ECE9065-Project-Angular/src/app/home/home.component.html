@@ -6,5 +6,11 @@
       <a [routerLink]="['/songsList']">
       <button mat-raised-button class = " button_style">Click me!</button>
       </a>
+
+      <input type= "email" placeholder="email" [(ngModel)] = 'email'> 
+      <input type= "password" placeholder="password"  [(ngModel)] = 'password'> 
+      <button (click) = 'submit()'>submit</button>
+      <button (click)="socialSignIn('google')">Google</button>
+    
     </div>
   </section>

@@ -21,6 +21,7 @@
     "@angular/platform-browser": "~8.2.13",
     "@angular/platform-browser-dynamic": "~8.2.13",
     "@angular/router": "~8.2.13",
+    "angular-6-social-login": "^1.1.1",
     "ng-starrating": "^1.0.7",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",

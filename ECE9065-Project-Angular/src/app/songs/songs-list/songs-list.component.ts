@@ -107,7 +107,8 @@ export class SongsListComponent implements OnInit {
     const dialogRef = this.dialog.open(AddNewSongDialog, {
       width: '400px',
        data: {
-        newSong: newSong  
+        newSong: newSong,
+        allSongs: this.songs
        }
     });
 

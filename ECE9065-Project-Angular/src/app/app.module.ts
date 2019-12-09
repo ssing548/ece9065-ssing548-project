@@ -23,6 +23,21 @@ import { CreateNewPlaylistDialog } from './playlists/createPlaylist/new-playlist
 import {MatListModule} from '@angular/material/list';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import { RatingModule } from 'ng-starrating';
+import { GoogleLoginProvider, AuthService } from 'angular-6-social-login';  
+import { SocialLoginModule, AuthServiceConfig } from 'angular-6-social-login'; 
+export function socialConfigs() {  
+  const config = new AuthServiceConfig(  
+    [  
+      
+      {  
+        id: GoogleLoginProvider.PROVIDER_ID,  
+        provider: new GoogleLoginProvider('981940788707-855184vmjdn5cgg8c3flqp1plcf2b5lp.apps.googleusercontent.com')  
+      }  
+    ]  
+  );  
+  return config;  
+}  
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -52,7 +67,11 @@ import { RatingModule } from 'ng-starrating';
     MatButtonToggleModule,
     RatingModule
   ],
-  providers: [],
+  providers: [AuthService,  
+    {  
+      provide: AuthServiceConfig,  
+      useFactory: socialConfigs  
+    }  ],
   bootstrap: [AppComponent],
   entryComponents: [ReviewComponent, AddReviewDialog,SongsListComponent , ShowPlayListDialog,AddNewSongDialog,CreateNewPlaylistDialog] 
 })
