@@ -75,16 +75,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
       var listId = this.data.playlistInfo.listId;
       this.playlistService.editPlaylist(this.data.playlistInfo).subscribe(res => {
         if (res) {
-        //  var createdPlaylist:IPlaylist = {
-        //   listId: data.listId,
-        //   listTitle: data.listTitle,
-        //   listDesc: data.listDesc,
-        //   createdOn: data.createdOn,
-        //   createdBy: data.createdBy,
-        //   visibility:data.visibility,
-        //   songs: data.songs
-        //  }
-         this.data.playlists.splice(this.data.playlists.findIndex(x => x.listId == listId),1)[0];
+        this.data.playlists.splice(this.data.playlists.findIndex(x => x.listId == listId),1)[0];
         this.data.playlists.push(this.data.playlistInfo);
         }
 

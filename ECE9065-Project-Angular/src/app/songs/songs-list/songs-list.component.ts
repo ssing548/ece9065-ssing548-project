@@ -121,6 +121,7 @@ export class SongsListComponent implements OnInit {
   }
 
   showCreatePlaylistDialog(action:string,listId: string){
+    console.log(listId);
     if(action == 'create'){
     var newPlaylist:IPlaylist = {
       listId: "",
@@ -192,7 +193,22 @@ export class SongsListComponent implements OnInit {
       error: err => this.errorMessage = err
     });
   }
+  togglePlaylistVisibility(action:string,playlistId:string){
+    var visibility:boolean;
+    if( action == "hide" )
+    visibility = false;
 
+    else
+    visibility = true
+
+    console.log("playlist id is"+playlistId);
+    var res = this.playlistService.toggleVisibility(visibility,playlistId);
+        if(res){
+          console.log("i have received resomsne");
+          this.getListbyId(playlistId).visibility = visibility;
+        }
+
+  }
   onPlaylistPanelSelected(event: MatTabChangeEvent) {
 
     console.log('index => ', event.index);

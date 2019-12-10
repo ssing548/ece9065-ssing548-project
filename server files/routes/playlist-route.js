@@ -50,7 +50,21 @@ router.post('/editplaylist',(req,res)=>{
  })
  
 
-
+ router.post('/changevisibility',(req,res)=>{
+    console.log("changevisibility");
+    //const email = req.body.email;
+    //console.log(req.body.songTitle);
+    Playlist.update({'listId':req.body.playlistId},{$set:{
+        
+        visibility: req.body.visibility
+       
+    }}).then(()=>{
+        //res.json({user: 'created'});
+        //const token = signToken(newuser);
+        res.status(200).send("change done");
+    })
+ })
+ 
 router.get("/getplaylists", (req, res) => {
     Playlist.find().then(data => {
         res.json(data);

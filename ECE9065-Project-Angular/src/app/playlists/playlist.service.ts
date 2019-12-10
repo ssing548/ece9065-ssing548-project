@@ -8,6 +8,15 @@ import { catchError, tap, map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class PlaylistService {
+  toggleVisibility(visibility: boolean, playlistId: string):string{
+    var data = {
+      "visibility": visibility,
+      "playlistId":playlistId
+    };
+    console.log(data);
+    return JSON.stringify(this.http.post('http://localhost:3000/auth/playlist/changevisibility',data));
+  }
+
   editPlaylist(playlistInfo: IPlaylist):Observable<any>  {
     return this.http.post('http://localhost:3000/auth/playlist/editplaylist',playlistInfo);
   }
