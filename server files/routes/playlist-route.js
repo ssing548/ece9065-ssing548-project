@@ -9,7 +9,7 @@ const mongoose = require("mongoose");
 
 
 
-router.put('/addplaylist',(req,res)=>{
+router.put('/auth/addplaylist',passport.authenticate('jwt',{session:false}),(req,res)=>{
    console.log("addplaylist");
    //const email = req.body.email;
    //console.log(req.body.songTitle);
@@ -31,7 +31,7 @@ router.put('/addplaylist',(req,res)=>{
 })
 
 
-router.post('/editplaylist',(req,res)=>{
+router.post('/auth/editplaylist',passport.authenticate('jwt',{session:false}),(req,res)=>{
     console.log("editplaylist");
     //const email = req.body.email;
     //console.log(req.body.songTitle);
@@ -45,12 +45,12 @@ router.post('/editplaylist',(req,res)=>{
     }}).then(()=>{
         //res.json({user: 'created'});
         //const token = signToken(newuser);
-        res.status(200);
+        res.status(200).send();
     })
  })
  
 
- router.post('/changevisibility',(req,res)=>{
+ router.post('/auth/changevisibility',passport.authenticate('jwt',{session:false}),(req,res)=>{
     console.log("changevisibility");
     //const email = req.body.email;
     //console.log(req.body.songTitle);
@@ -61,7 +61,7 @@ router.post('/editplaylist',(req,res)=>{
     }}).then(()=>{
         //res.json({user: 'created'});
         //const token = signToken(newuser);
-        res.status(200).send("change done");
+        res.status(200).send();
     })
  })
  

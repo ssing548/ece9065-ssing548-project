@@ -13,14 +13,14 @@ export class SongService {
 
     //onsole.log("lo"+JSON.stringify(newSong));
     console.log("Method not implemented." );
-    return this.http.put('http://localhost:3000/auth/song/addsong',newSong);
+    return this.http.put('http://localhost:3000/song/auth/addsong',newSong);
   }
   private songUrl = 'assets/songs.json';
 
   constructor(private http: HttpClient) { }
 
   getSongs(): Observable<ISong[]>{
-    return this.http.get<ISong[]>('http://localhost:3000/auth/song/getsongs')
+    return this.http.get<ISong[]>('http://localhost:3000/song/getsongs')
       .pipe(
         tap(data => console.log('All: ' + JSON.stringify(data))),
         map(data => data.sort((a,b)=> b.averageRating - a.averageRating))

@@ -48,8 +48,8 @@
     </mat-card-content>  </div>
     <mat-card-actions>
       <button mat-raised-button *ngIf='isAuth' (click) = "showCreatePlaylistDialog('edit',playlist.listId)">Edit</button>
-      <button mat-raised-button *ngIf='playlist.visibility' (click) = "togglePlaylistVisibility('hide',playlist.listId)">Hide Playlist</button>
-      <button mat-raised-button *ngIf='!playlist.visibility' (click) = "togglePlaylistVisibility('show',playlist.listId)">Show Playlist</button>
+      <button mat-raised-button *ngIf='isAuth && playlist.visibility' (click) = "togglePlaylistVisibility('hide',playlist.listId)">Hide Playlist</button>
+      <button mat-raised-button *ngIf='isAuth && !playlist.visibility' (click) = "togglePlaylistVisibility('show',playlist.listId)">Show Playlist</button>
     </mat-card-actions>
     </mat-card>
   </mat-tab>

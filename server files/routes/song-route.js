@@ -16,7 +16,7 @@ const mongoose = require("mongoose");
 //    },keys.jwt.secret);
 // }
 
-router.put('/addsong',(req,res)=>{
+router.put('/auth/addsong',passport.authenticate('jwt',{session:false}),(req,res)=>{
    console.log("addsong");
    //const email = req.body.email;
    console.log(req.body.songTitle);

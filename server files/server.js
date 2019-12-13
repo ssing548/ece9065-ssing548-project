@@ -38,10 +38,10 @@ app.use(function(req, res, next) {
 const userRoute =  require("./routes/user");
 app.use('/auth',userRoute); 
 const songRoute =  require("./routes/song-route");
-app.use('/auth/song',songRoute); 
+app.use('/song',songRoute); 
 const reviewRoute =  require("./routes/review-route");
-app.use('/auth/review',reviewRoute); 
+app.use('/review',reviewRoute); 
 const playlistRoute =  require("./routes/playlist-route");
-app.use('/auth/playlist',playlistRoute); 
+app.use('/playlist',playlistRoute); 
 const port = process.env.PORT || 3000;
 app.listen(port);

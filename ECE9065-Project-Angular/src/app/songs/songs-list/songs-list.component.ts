@@ -213,11 +213,13 @@ export class SongsListComponent implements OnInit {
     visibility = true
 
     console.log("playlist id is"+playlistId);
-    var res = this.playlistService.toggleVisibility(visibility,playlistId);
-        if(res){
-          console.log("i have received resomsne");
-          this.getListbyId(playlistId).visibility = visibility;
-        }
+    this.playlistService.toggleVisibility(visibility,playlistId).subscribe(res=>{
+      if(res && res.status == 200){
+        console.log(res.status);
+        this.getListbyId(playlistId).visibility = visibility;
+      }
+    });
+        
 
   }
   onPlaylistPanelSelected(event: MatTabChangeEvent) {

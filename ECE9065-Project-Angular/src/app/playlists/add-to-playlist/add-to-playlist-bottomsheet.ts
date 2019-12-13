@@ -30,6 +30,7 @@ import { PlaylistService } from '../playlist.service';
         if(!this.songExist){
           playlist.songs.push(this.data.songId);
           this.playlistService.editPlaylist(playlist).subscribe(res=>{
+            if(res.status == 200)
             this.songadded = true;
             
 

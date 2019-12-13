@@ -23,7 +23,7 @@ export class ReviewService {
   //     );
   // }
   getReviews(songId:String): Observable<IReview[]>{
-    return this.http.get<IReview[]>('http://localhost:3000/auth/review/getreviews')
+    return this.http.get<IReview[]>('http://localhost:3000/review/getreviews')
       .pipe(
         tap(data => console.log('All: ' + JSON.stringify(data))),
        map(data => data.filter( data  => data.songId == songId)),
@@ -33,7 +33,7 @@ export class ReviewService {
   }
   addNewReview(newReview: IReview):Observable<any> {
     console.log(newReview);
-    return this.http.put('http://localhost:3000/auth/review/addreview',newReview);
+    return this.http.put('http://localhost:3000/review/auth/addreview',newReview);
   }
 }
 

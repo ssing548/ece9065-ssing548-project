@@ -7,7 +7,7 @@ const passportConfig = require("../config/passport-setup");
 const Review = require('../models/review');
 const mongoose = require("mongoose");
 
-router.put('/addreview',(req,res)=>{
+router.put('/auth/addreview',passport.authenticate('jwt',{session:false}),(req,res)=>{
    console.log("addreview");
    //const email = req.body.email;
    //console.log(req.body.songTitle);
