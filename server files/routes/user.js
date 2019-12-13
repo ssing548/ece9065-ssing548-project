@@ -50,7 +50,7 @@ router.post('/signup',(req,res)=>{
 router.post('/signin',passport.authenticate('local',{session:false}),(req,res)=>{
     console.log("signin");
     const token = signToken(req.user);
-    res.status(200).json({token:token});
+    res.status(200).json({token:token,user:req.user});
 
 });
 
@@ -63,15 +63,17 @@ router.get('/secret',passport.authenticate('jwt',{session:false}),(req,res)=>{
 router.post('/oauth/google',passport.authenticate('googleToken',{session:false}),(req,res)=>{
     // console.log("signin");
      const token = signToken(req.user);
+   
      res.status(200).json({token:token});
 
 });
 
 
-router.post('/oauth/facebook',passport.authenticate('facebookToken',{session:false},{scope:['profile']}),(req,res)=>{
+router.post('/oauth/facebook',passport.authenticate('facebookToken',{session:false}),(req,res,next)=>{
     // console.log("signin");
-    // const token = signToken(req.user);
-    // res.status(200).json({token:token});
+     const token = signToken(req.user);
+     console.log("token is "  + token);
+     res.status(200).json({"token":token});
 
 });
 module.exports = router;

@@ -5,6 +5,7 @@ import { SocialLoginModule, AuthServiceConfig } from 'angular-6-social-login';
 import { Socialusers } from '../social-users'  
 //import { SocialloginService } from '../Service/sociallogin.service';  
 import { Router, ActivatedRoute, Params } from '@angular/router';  
+import { stringify } from 'querystring';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -12,8 +13,8 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 })
 export class HomeComponent implements OnInit {
 
-  email:String;
-  password:String;
+  email:string;
+  password:string;
 
   response;  
   socialusers=new Socialusers();  
@@ -23,26 +24,32 @@ constructor(
   private router: Router  
 ) { }  
 public socialSignIn(socialProvider: string) {  
-
-  
-let socialPlatformProvider = GoogleLoginProvider.PROVIDER_ID;  
+  let socialPlatformProvider;  
+  if (socialProvider === 'facebook') {  
+    socialPlatformProvider = FacebookLoginProvider.PROVIDER_ID;  
+  } else if (socialProvider === 'google') {  
+    socialPlatformProvider = GoogleLoginProvider.PROVIDER_ID;  
+  } 
+    
   console.log(socialPlatformProvider);
   this.OAuth.signIn(socialPlatformProvider).then(socialusers => {  
     console.log(socialProvider);  
     console.log(socialusers);  
+    localStorage.setItem('socialusers', JSON.stringify( socialusers));  
+    console.log(localStorage.getItem('socialusers'));
     this.Savesresponse(socialusers);  
   });  
 }  
 Savesresponse(socialusers: Socialusers) {  
   this.Userservice.Savesresponse(socialusers).subscribe((res: any) => {  
-    debugger;  
+     
     console.log(res);  
     this.socialusers=res;  
 
     this.response = res.userDetail;  
-    localStorage.setItem('socialusers', JSON.stringify( this.socialusers));  
-    console.log(localStorage.setItem('socialusers', JSON.stringify(this.socialusers)));  
-    this.router.navigate([`/auth`]);  
+    localStorage.setItem('userJWTtoken', JSON.stringify( this.socialusers.token).substring(1,this.socialusers.token.length+1));  
+    console.log("###"+localStorage.getItem('userJWTtoken')); 
+    this.router.navigate([`/auth/true`]);  
   })  
 }  
 
@@ -50,7 +57,30 @@ Savesresponse(socialusers: Socialusers) {
   }
 
   submit(){
-    
+    this.Userservice.verifyUser(this.email,this.password).subscribe(data=>{
+      if(data){
+        var token:string  =  JSON.stringify(data.token);
+        interface userObj {
+          method:string,
+          local:{
+            email:string,
+            password:string
+          },
+          _id:string
+        }
+
+        var user:userObj  = data.user;
+        console.log(user);
+       // let obj: MyObj = JSON.parse('{ "myString": "string", "myNumber": 4 }');
+  
+        localStorage.setItem('socialusers', JSON.stringify(user));
+        localStorage.setItem('userJWTtoken', token.substring(1,token.length-1)); 
+        console.log(localStorage.getItem('socialusers')); 
+        console.log(localStorage.getItem('userJWTtoken')); 
+        this.router.navigate([`/auth/true`]);  
+      }
+
+    });
   }
 
 

@@ -23,8 +23,14 @@ import { CreateNewPlaylistDialog } from './playlists/createPlaylist/new-playlist
 import {MatListModule} from '@angular/material/list';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import { RatingModule } from 'ng-starrating';
-import { GoogleLoginProvider, AuthService } from 'angular-6-social-login';  
+import { GoogleLoginProvider, FacebookLoginProvider,AuthService } from 'angular-6-social-login';  
 import { SocialLoginModule, AuthServiceConfig } from 'angular-6-social-login'; 
+import {AddToPlaylistBottomsheet} from './playlists/add-to-playlist/add-to-playlist-bottomsheet';
+import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
+import {PlaylistSnackBar} from './playlists/add-to-playlist/info-snackbar';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { UserTokenInterceptor } from './user-token-interceptor';
 export function socialConfigs() {  
   const config = new AuthServiceConfig(  
     [  
@@ -32,7 +38,11 @@ export function socialConfigs() {
       {  
         id: GoogleLoginProvider.PROVIDER_ID,  
         provider: new GoogleLoginProvider('981940788707-855184vmjdn5cgg8c3flqp1plcf2b5lp.apps.googleusercontent.com')  
-      }  
+      } ,
+      {  
+        id: FacebookLoginProvider.PROVIDER_ID,  
+        provider: new FacebookLoginProvider('532759764234641')  
+      },  
     ]  
   );  
   return config;  
@@ -47,7 +57,9 @@ export function socialConfigs() {
     AddReviewDialog,
     ShowPlayListDialog,
     AddNewSongDialog,
-    CreateNewPlaylistDialog
+    CreateNewPlaylistDialog,
+    AddToPlaylistBottomsheet,
+    PlaylistSnackBar
   ],
   imports: [
     BrowserModule,
@@ -65,14 +77,21 @@ export function socialConfigs() {
     MatSelectModule,
     MatListModule,
     MatButtonToggleModule,
-    RatingModule
+    RatingModule,
+    MatBottomSheetModule,
+    MatSnackBarModule
   ],
   providers: [AuthService,  
     {  
       provide: AuthServiceConfig,  
       useFactory: socialConfigs  
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: UserTokenInterceptor,
+      multi: true
     }  ],
   bootstrap: [AppComponent],
-  entryComponents: [ReviewComponent, AddReviewDialog,SongsListComponent , ShowPlayListDialog,AddNewSongDialog,CreateNewPlaylistDialog] 
+  entryComponents: [ReviewComponent, AddReviewDialog,SongsListComponent , ShowPlayListDialog,AddNewSongDialog,CreateNewPlaylistDialog,AddToPlaylistBottomsheet] 
 })
 export class AppModule { }

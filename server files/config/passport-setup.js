@@ -16,8 +16,10 @@
     },(payLoad,done)=>{
     try {
         //find user in token
+        console.log("validating");
         const user = User.findById(payLoad.sub);
         //if user doesnt exist, handle it
+        
         if(!user){
             return done(null,false);
         }
@@ -25,6 +27,7 @@
         //otherwise return user
         done(null,user);
     } catch (error) {
+        console.log("validating");
         done(error,false);
     }
 
@@ -36,14 +39,57 @@
 passport.use('facebookToken',new FacebookTokenStarategy({
     clientID : keys.facebook.clientID,
     clientSecret : keys.facebook.clientSecret
-},async (accessToken,refreshToken,profile,done)=>{
+},  (accessToken,refreshToken,profile,done)=>{
     try {
         console.log("accessToken"+accessToken);
         console.log("refreshToken"+refreshToken);
         console.log("profilep"+profile.emails[0].value);
+
+
+        const existingUser =  User.findOne({"facebook.id": profile.id}).then((res)=>{
+
+            if(res){
+                console.log("user exists in db");
+                return done(null,res);
+            }
+           
+               //if new account
+        console.log("user doesnt exists in db, creating");
+        const newUser = new User({
+            method:'facebook',
+            facebook:{
+                id:profile.id,
+                email:profile.emails[0].value
+            }
+        });
+    
+      newUser.save().then((res)=>{
+      console.log("inside");
+      if(res) {
+         done(null, res);
+      }
+       
+       }).catch((err)=>{
+           console.log("promise error"+err);
+       }
+       );
+
+        }).catch((err)=>{
+            console.log("Promise rejected"+err);
+        });
+        
+    
+     
+        // if successful, return the new user
+       
+       
+     
     } catch (error) {
+        console.log("got in eror");
         done(error,false,error.message);
+        next(err);
     }
+
 
 }));
 
@@ -103,7 +149,7 @@ passport.use('facebookToken',new FacebookTokenStarategy({
 
 
 
- passport.use(new LocalStarategy({
+ passport.use('local',new LocalStarategy({
     usernameField: 'email'
  },async (email,password,done)=>{
 

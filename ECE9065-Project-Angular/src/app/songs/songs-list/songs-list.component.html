@@ -26,7 +26,7 @@
           <span><label>Artist:</label>{{ song.artist }}</span>
           <span><label>Year:</label>{{ song.year }}</span>
           <span><label>Genre:</label>{{ song.genre }}</span>
-          <button mat-raised-button *ngIf='isAuth'>Add to Playlist</button>
+          <button mat-raised-button *ngIf='isAuth' (click)="openBottomSheet(song.songId)">Add to Playlist</button>
           <app-review [songId]='song.songId'  [isAuth]='isAuth'></app-review>
 
         </mat-expansion-panel>

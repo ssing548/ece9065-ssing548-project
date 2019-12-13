@@ -1,0 +1,17 @@
+<mat-card *ngFor='let playlist of this.data.playlists'>
+        <!-- <mat-card-title class= '' > {{song.songTitle}}</mat-card-title> -->
+        <mat-card-content>
+                <span><b>{{playlist.listTitle}}</b></span>
+                 <button class="plbutton" (click) = 'addSongToPlaylist(playlist)' >Add</button>
+      </mat-card-content> 
+</mat-card>
+<mat-card *ngIf = 'songadded'>
+        <mat-card-content>
+    <span>Song Added</span>
+</mat-card-content> 
+</mat-card>
+<mat-card *ngIf = 'songExist'>
+        <mat-card-content>
+        <span>Song Already Exist</span>
+        </mat-card-content>
+</mat-card>

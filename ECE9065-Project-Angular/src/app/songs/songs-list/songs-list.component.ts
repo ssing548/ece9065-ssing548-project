@@ -9,6 +9,8 @@ import { ActivatedRoute } from '@angular/router';
 import { CreateNewPlaylistDialog } from '../../playlists/createPlaylist/new-playlist-dialog'
 import { AddNewSongDialog } from '../add-new-song/add-song-dialog';
 import { ShowPlayListDialog } from '../../playlists/viewPlaylist/show-playlist-dialog';
+import {MatBottomSheet, MatBottomSheetRef} from '@angular/material/bottom-sheet';
+import {AddToPlaylistBottomsheet} from '../../playlists/add-to-playlist/add-to-playlist-bottomsheet';
 
 @Component({
   selector: 'app-songs-list',
@@ -27,10 +29,19 @@ export class SongsListComponent implements OnInit {
   songsInPlaylist: ISong[] = [];
   
   constructor(private songService: SongService, private playlistService: PlaylistService,
-    public dialog: MatDialog,private route: ActivatedRoute) { 
+    public dialog: MatDialog,private route: ActivatedRoute,private _bottomSheet: MatBottomSheet) { 
       // console.log( "param"+this.route.snapshot.queryParamMap.get("flag"));
       // this.isAuth = this.route.snapshot.queryParamMap.get('flag') == "true" ? true : false;
       // console.log(this.isAuth);
+    }
+
+    openBottomSheet(songId:string): void {
+      this._bottomSheet.open(AddToPlaylistBottomsheet,{
+        data:{
+          playlists:this.playlists,
+          songId:songId
+        }
+      });
     }
 
   _songSearchBy = '';

@@ -5,7 +5,7 @@
         method:{
             type: String,
             required: true,
-           enum : ['local','google']
+           enum : ['local','google','facebook']
         },
         local:{
             email:{
@@ -17,6 +17,15 @@
             }
         },
         google:{
+            id:{
+                type: String
+            },
+            email:{
+                type: String,
+                lowercase:true 
+            }
+        },
+        facebook:{
             id:{
                 type: String
             },

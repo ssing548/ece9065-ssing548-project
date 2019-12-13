@@ -17,7 +17,8 @@
   <div class = "navbar"><ul>
     <li><a [routerLink]="['/auth', 'true']">Sign in</a></li>
 
-    <li><a href="#about">Sign up</a></li>
+    <li><button mat-raised-button (click) = 'getResource()' >secret</button></li>
+    <li> <button mat-raised-button (click) = 'logout()' >Logout</button></li>
   </ul></div>
 </mat-toolbar>
 
