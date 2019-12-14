@@ -28,7 +28,7 @@ import { IReview } from '../review';
             reviewId: data.reviewId,
             songId: data.songId,
             submittedOn: data.submittedOn,
-            submitedBy: data.yesubmitedByar,
+            submitedBy: data.submitedBy,
             reviewDesc:data.reviewDesc,
             rating: data.rating,
             visibility: data.visibility

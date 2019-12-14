@@ -59,7 +59,8 @@ passport.use('facebookToken',new FacebookTokenStarategy({
             method:'facebook',
             facebook:{
                 id:profile.id,
-                email:profile.emails[0].value
+                email:profile.emails[0].value,
+                name:profile.name.givenName
             }
         });
     

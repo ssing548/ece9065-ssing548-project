@@ -9,8 +9,8 @@ import { ActivatedRoute } from '@angular/router';
 import { CreateNewPlaylistDialog } from '../../playlists/createPlaylist/new-playlist-dialog'
 import { AddNewSongDialog } from '../add-new-song/add-song-dialog';
 import { ShowPlayListDialog } from '../../playlists/viewPlaylist/show-playlist-dialog';
-import {MatBottomSheet, MatBottomSheetRef} from '@angular/material/bottom-sheet';
-import {AddToPlaylistBottomsheet} from '../../playlists/add-to-playlist/add-to-playlist-bottomsheet';
+import { MatBottomSheet, MatBottomSheetRef } from '@angular/material/bottom-sheet';
+import { AddToPlaylistBottomsheet } from '../../playlists/add-to-playlist/add-to-playlist-bottomsheet';
 
 @Component({
   selector: 'app-songs-list',
@@ -25,24 +25,25 @@ export class SongsListComponent implements OnInit {
   searchedSongs: ISong[] = [];
   errorMessage = '';
   selected = 'songs';
-  isAuth:boolean;
+  isAuth: boolean;
+  authUser:any;
   songsInPlaylist: ISong[] = [];
-  
-  constructor(private songService: SongService, private playlistService: PlaylistService,
-    public dialog: MatDialog,private route: ActivatedRoute,private _bottomSheet: MatBottomSheet) { 
-      // console.log( "param"+this.route.snapshot.queryParamMap.get("flag"));
-      // this.isAuth = this.route.snapshot.queryParamMap.get('flag') == "true" ? true : false;
-      // console.log(this.isAuth);
-    }
 
-    openBottomSheet(songId:string): void {
-      this._bottomSheet.open(AddToPlaylistBottomsheet,{
-        data:{
-          playlists:this.playlists,
-          songId:songId
-        }
-      });
-    }
+  constructor(private songService: SongService, private playlistService: PlaylistService,
+    public dialog: MatDialog, private route: ActivatedRoute, private _bottomSheet: MatBottomSheet) {
+    // console.log( "param"+this.route.snapshot.queryParamMap.get("flag"));
+    // this.isAuth = this.route.snapshot.queryParamMap.get('flag') == "true" ? true : false;
+    // console.log(this.isAuth);
+  }
+
+  openBottomSheet(songId: string): void {
+    this._bottomSheet.open(AddToPlaylistBottomsheet, {
+      data: {
+        playlists: this.playlists,
+        songId: songId
+      }
+    });
+  }
 
   _songSearchBy = '';
   get songSearchBy(): string {
@@ -76,19 +77,11 @@ export class SongsListComponent implements OnInit {
       }
     });
 
-    //dialogRef.afterClosed().subscribe(result => {
-      // console.log('The dialog was closed');
-      // this.reviewText = result.reviewText;
-      // this.rating = result.rating;
-      // console.log( this.reviewText+this.rating);
-     // this.addReview();
-    //});
-
   }
-  getListbyId(listId:string){
+  getListbyId(listId: string) {
     for (var i = 0; i < this.playlists.length; i++) {
       if (this.playlists[i].listId === listId)
-          return this.playlists[i];
+        return this.playlists[i];
 
     }
   }
@@ -101,8 +94,9 @@ export class SongsListComponent implements OnInit {
     }
   }
 
-  showAddSongDialog(){
-    var newSong:ISong = {
+  showAddSongDialog() {
+    var user = JSON.parse(localStorage.getItem("socialusers"));
+    var newSong: ISong = {
       songId: "",
       songTitle: "",
       artist: "",
@@ -111,53 +105,48 @@ export class SongsListComponent implements OnInit {
       comment: "",
       genre: "",
       submittedOn: new Date(),
-      submittedBy: "",
-      numberOfRatings: 0 ,
-      averageRating:0 
-  }; 
+      submittedBy: user.email,
+      numberOfRatings: 0,
+      averageRating: 0
+    };
     const dialogRef = this.dialog.open(AddNewSongDialog, {
       width: '400px',
-       data: {
+      data: {
         newSong: newSong,
         allSongs: this.songs
-       }
+      }
     });
 
-    // dialogRef.afterClosed().subscribe(result => {
-    //   console.log(this.newSong);
-    //   this.songService.addNewSong(this.newSong);
-
-    // });
-
   }
 
-  showCreatePlaylistDialog(action:string,listId: string){
+  showCreatePlaylistDialog(action: string, listId: string) {
     console.log(listId);
-    if(action == 'create'){
-    var newPlaylist:IPlaylist = {
-      listId: "",
-      listTitle: "",
-      listDesc: "",
-      createdOn: new Date(),
-      createdBy: "",
-      visibility: true,
-      songs: []
-    };
+    var user = JSON.parse(localStorage.getItem("socialusers"));
+    if (action == 'create') {
+      var newPlaylist: IPlaylist = {
+        listId: "",
+        listTitle: "",
+        listDesc: "",
+        createdOn: new Date(),
+        createdBy: user.email,
+        visibility: true,
+        songs: []
+      };
 
-    var allSongs:ISong[] = Object.assign([], this.songs);
-    var playlistSongs:ISong[] = Object.assign([],this.songsInPlaylist);
-  }
-    else{
-      var newPlaylist:IPlaylist = this.getListbyId(listId);
-      
-      var playlistSongs:ISong[]  = [];
+      var allSongs: ISong[] = Object.assign([], this.songs);
+      var playlistSongs: ISong[] = Object.assign([], this.songsInPlaylist);
+    }
+    else {
+      var newPlaylist: IPlaylist = this.getListbyId(listId);
+
+      var playlistSongs: ISong[] = [];
       for (var i = 0; i < newPlaylist.songs.length; i++) {
         playlistSongs.push(this.getSongById(newPlaylist.songs[i]))
       }
 
-      var allSongs:ISong[] = Object.assign([], this.songs);
+      var allSongs: ISong[] = Object.assign([], this.songs);
       for (var i = 0; i < newPlaylist.songs.length; i++)
-        allSongs.splice(allSongs.findIndex( x => x.songId == newPlaylist.songs[i]),1);
+        allSongs.splice(allSongs.findIndex(x => x.songId == newPlaylist.songs[i]), 1);
 
 
     }
@@ -165,28 +154,29 @@ export class SongsListComponent implements OnInit {
     const dialogRef = this.dialog.open(CreateNewPlaylistDialog, {
       height: '400px',
       width: '600px',
-       data: {
+      data: {
         availableSongs: allSongs,
         playlistInfo: newPlaylist,
         songsInPlaylist: playlistSongs,
-        playlists:this.playlists,
-        action:action
-       }
+        playlists: this.playlists,
+        action: action
+      }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log(result);
-    
+
     });
 
-    
-}
+
+  }
   ngOnInit() {
-      this.route.params.subscribe(params => {
+    this.route.params.subscribe(params => {
       this.isAuth = params['flag']; // (+) converts string 'id' to a number
+     this.authUser = JSON.parse(localStorage.getItem("socialusers"));
       console.log(this.isAuth)
       // In a real app: dispatch action to load the details here.
-   });
+    });
 
     this.songService.getSongs().subscribe({
       next: songs => {
@@ -196,30 +186,45 @@ export class SongsListComponent implements OnInit {
       error: err => this.errorMessage = err
     });
 
-    this.playlistService.getPlaylists().subscribe({
-      next: playlists => {
-        this.playlists = playlists;
-        // this.searchedSongs = this.songs;
-      },
-      error: err => this.errorMessage = err
-    });
+    var user = JSON.parse(localStorage.getItem("socialusers"));
+    if (user) {
+
+      this.playlistService.getLoggedInUserPlaylists(user.email).subscribe({
+        next: playlists => {
+          this.playlists = playlists;
+          // this.searchedSongs = this.songs;
+        },
+        error: err => this.errorMessage = err
+      });
+    }
+    else {
+      this.playlistService.getPlaylists().subscribe({
+        next: playlists => {
+          this.playlists = playlists;
+          // this.searchedSongs = this.songs;
+        },
+        error: err => this.errorMessage = err
+      });
+    }
+
+
   }
-  togglePlaylistVisibility(action:string,playlistId:string){
-    var visibility:boolean;
-    if( action == "hide" )
-    visibility = false;
+  togglePlaylistVisibility(action: string, playlistId: string) {
+    var visibility: boolean;
+    if (action == "hide")
+      visibility = false;
 
     else
-    visibility = true
+      visibility = true
 
-    console.log("playlist id is"+playlistId);
-    this.playlistService.toggleVisibility(visibility,playlistId).subscribe(res=>{
-      if(res && res.status == 200){
+    console.log("playlist id is" + playlistId);
+    this.playlistService.toggleVisibility(visibility, playlistId).subscribe(res => {
+      if (res && res.status == 200) {
         console.log(res.status);
         this.getListbyId(playlistId).visibility = visibility;
       }
     });
-        
+
 
   }
   onPlaylistPanelSelected(event: MatTabChangeEvent) {

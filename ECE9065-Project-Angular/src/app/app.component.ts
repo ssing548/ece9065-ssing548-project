@@ -16,9 +16,10 @@ export class AppComponent {
 }
 
 logout(){
-    var user = JSON.parse(localStorage.getItem('socialusers'));
-    console.log(user);
-    if(user.method && user.method == 'local'){
+    var loggedInUser = JSON.parse(localStorage.getItem('socialusers'));
+    console.log(loggedInUser);
+    if(loggedInUser){
+    if(loggedInUser.method && loggedInUser.method == 'local'){
       localStorage.removeItem("socialusers");
       localStorage.removeItem("userJWTtoken");
       console.log(localStorage.getItem('userJWTtoken'));
@@ -33,6 +34,7 @@ logout(){
     this.router.navigate([``]);  
 
   }); }
+}
 }
 
 getResource(){

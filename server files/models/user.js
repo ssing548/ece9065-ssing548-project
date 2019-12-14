@@ -14,6 +14,9 @@
             },
             password:{
                 type: String
+            },
+            name:{
+                type: String
             }
         },
         google:{
@@ -30,6 +33,10 @@
                 type: String
             },
             email:{
+                type: String,
+                lowercase:true 
+            },
+            name:{
                 type: String,
                 lowercase:true 
             }

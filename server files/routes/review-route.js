@@ -5,6 +5,7 @@ const JWT = require("jsonwebtoken");
 const passport = require('passport');
 const passportConfig = require("../config/passport-setup");
 const Review = require('../models/review');
+const Song = require('../models/songs');
 const mongoose = require("mongoose");
 
 router.put('/auth/addreview',passport.authenticate('jwt',{session:false}),(req,res)=>{
@@ -24,9 +25,28 @@ router.put('/auth/addreview',passport.authenticate('jwt',{session:false}),(req,r
    newReview.save().then((newreview)=>{
        //res.json({user: 'created'});
        //const token = signToken(newuser);
-       res.status(200).json(newreview);
-   })
-})
+       Song.findOneAndUpdate({'songId':req.body.songId},{$inc: {
+        numberOfRatings: 1 
+      }}).then(()=>{
+        //res.json({user: 'created'});
+        //const token = signToken(newuser);
+      
+    })
+    .catch(err=>{
+        res.json({ message: err });
+       })
+
+    res.status(200).json(newreview);
+   }).catch(err=>{
+    res.json({ message: err });
+   });
+
+
+
+   
+  
+
+});
 
 
 router.get("/getreviews", (req, res) => {

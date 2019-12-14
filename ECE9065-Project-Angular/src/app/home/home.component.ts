@@ -35,7 +35,12 @@ public socialSignIn(socialProvider: string) {
   this.OAuth.signIn(socialPlatformProvider).then(socialusers => {  
     console.log(socialProvider);  
     console.log(socialusers);  
-    localStorage.setItem('socialusers', JSON.stringify( socialusers));  
+    var user = {
+      method:"facebook",
+      name:socialusers.name,
+      email:socialusers.email
+    }
+    localStorage.setItem('socialusers', JSON.stringify( user));  
     console.log(localStorage.getItem('socialusers'));
     this.Savesresponse(socialusers);  
   });  
@@ -60,16 +65,22 @@ Savesresponse(socialusers: Socialusers) {
     this.Userservice.verifyUser(this.email,this.password).subscribe(data=>{
       if(data){
         var token:string  =  JSON.stringify(data.token);
-        interface userObj {
-          method:string,
-          local:{
-            email:string,
-            password:string
-          },
-          _id:string
-        }
-
-        var user:userObj  = data.user;
+        // interface userObj {
+        //   method:string,
+        //   local:{
+        //     email:string,
+        //     password:string,
+        //     name:string
+        //   },
+        //   _id:string
+        // }
+var user = {
+  method:data.user.method,
+  name:data.user.local.name,
+  email:data.user.local.email
+}
+        //var user:userObj  = data.user;
+      //  var user = data.user;
         console.log(user);
        // let obj: MyObj = JSON.parse('{ "myString": "string", "myNumber": 4 }');
   

@@ -28,12 +28,13 @@ export class ReviewComponent implements OnInit {
 
     // dialogConfig.disableClose = true;
     console.log(this.songId);
+    var user = JSON.parse(localStorage.getItem("socialusers"));
     var newReview:IReview = {
 
       reviewId: "",
       songId: this.songId,
       submittedOn: new Date(),
-      submitedBy: "",
+      submitedBy: user.email,
       reviewDesc: "",
       rating: 1,
       visibility: true

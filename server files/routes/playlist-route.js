@@ -66,6 +66,16 @@ router.post('/auth/editplaylist',passport.authenticate('jwt',{session:false}),(r
  })
  
 router.get("/getplaylists", (req, res) => {
+    Playlist.find({visibility: "true"}).then(data => {
+        res.json(data);
+    })
+        .catch(err => {
+            res.json({ message: err });
+        });
+
+});
+
+router.get("/auth/getplaylists", passport.authenticate('jwt',{session:false}),(req, res) => {
     Playlist.find().then(data => {
         res.json(data);
     })
