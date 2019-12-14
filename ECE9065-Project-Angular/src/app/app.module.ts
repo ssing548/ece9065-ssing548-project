@@ -31,6 +31,8 @@ import {PlaylistSnackBar} from './playlists/add-to-playlist/info-snackbar';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { UserTokenInterceptor } from './user-token-interceptor';
+import {AuthGuard} from './auth.guard';
+
 export function socialConfigs() {  
   const config = new AuthServiceConfig(  
     [  
@@ -81,7 +83,7 @@ export function socialConfigs() {
     MatBottomSheetModule,
     MatSnackBarModule
   ],
-  providers: [AuthService,  
+  providers: [AuthService,AuthGuard,
     {  
       provide: AuthServiceConfig,  
       useFactory: socialConfigs  
