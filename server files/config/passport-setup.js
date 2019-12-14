@@ -60,7 +60,8 @@ passport.use('facebookToken',new FacebookTokenStarategy({
             facebook:{
                 id:profile.id,
                 email:profile.emails[0].value,
-                name:profile.name.givenName
+                name:profile.name.givenName,
+                role:"non-admin"
             }
         });
     

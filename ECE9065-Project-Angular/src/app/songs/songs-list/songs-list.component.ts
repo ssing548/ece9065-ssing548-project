@@ -26,6 +26,7 @@ export class SongsListComponent implements OnInit {
   errorMessage = '';
   selected = 'songs';
   isAuth: boolean;
+  isAdmin:boolean;
   authUser:any;
   songsInPlaylist: ISong[] = [];
 
@@ -172,8 +173,11 @@ export class SongsListComponent implements OnInit {
   }
   ngOnInit() {
     this.route.params.subscribe(params => {
+    
       this.isAuth = params['flag']; // (+) converts string 'id' to a number
-     this.authUser = JSON.parse(localStorage.getItem("socialusers"));
+      this.isAdmin = params['isadmin'];
+      console.log( this.isAuth , this.isAdmin);
+      this.authUser = JSON.parse(localStorage.getItem("socialusers"));
       console.log(this.isAuth)
       // In a real app: dispatch action to load the details here.
     });

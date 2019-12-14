@@ -7,7 +7,8 @@ import {AuthGuard} from './auth.guard';
 const routes: Routes = [ 
   {path:'',component:HomeComponent},
   {path:'songsList',component:SongsListComponent},
-  {path:'auth/:flag',component:SongsListComponent,canActivate:[AuthGuard]},
+  {path:'auth/:flag/:isadmin',component:SongsListComponent,canActivate:[AuthGuard]},
+//  {path:'auth/:flag',component:SongsListComponent,canActivate:[AuthGuard]},
   { path: '', redirectTo: '', pathMatch: 'full' },
   { path: '**', redirectTo: '', pathMatch: 'full' }];
 

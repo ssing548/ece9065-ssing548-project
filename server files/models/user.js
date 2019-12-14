@@ -17,6 +17,9 @@
             },
             name:{
                 type: String
+            },
+            role:{
+                type:String
             }
         },
         google:{
@@ -39,6 +42,9 @@
             name:{
                 type: String,
                 lowercase:true 
+            },
+            role:{
+                type: String 
             }
         }
        

@@ -35,7 +35,8 @@ router.post('/signup',(req,res)=>{
         method:"local",
         local:{
         email:email,
-        password:password
+        password:password,
+        role:"non-admin"
         }
         
     });
@@ -73,7 +74,7 @@ router.post('/oauth/facebook',passport.authenticate('facebookToken',{session:fal
     // console.log("signin");
      const token = signToken(req.user);
      console.log("token is "  + token);
-     res.status(200).json({"token":token});
+     res.status(200).json({token:token,user:req.user});
 
 });
 module.exports = router;

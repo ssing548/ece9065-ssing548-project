@@ -35,12 +35,12 @@ public socialSignIn(socialProvider: string) {
   this.OAuth.signIn(socialPlatformProvider).then(socialusers => {  
     console.log(socialProvider);  
     console.log(socialusers);  
-    var user = {
-      method:"facebook",
-      name:socialusers.name,
-      email:socialusers.email
-    }
-    localStorage.setItem('socialusers', JSON.stringify( user));  
+    // var user = {
+    //   method:"facebook",
+    //   name:socialusers.name,
+    //   email:socialusers.email
+    // }
+    // localStorage.setItem('socialusers', JSON.stringify( user));  
     console.log(localStorage.getItem('socialusers'));
     this.Savesresponse(socialusers);  
   });  
@@ -52,9 +52,23 @@ Savesresponse(socialusers: Socialusers) {
     this.socialusers=res;  
 
     this.response = res.userDetail;  
+    var user = {
+      method:"facebook",
+      name: res.user.facebook.name,
+      email: res.user.facebook.email,
+      role:res.user.facebook.role
+    }
+    console.log(user);
+    localStorage.setItem('socialusers', JSON.stringify( user));
     localStorage.setItem('userJWTtoken', JSON.stringify( this.socialusers.token).substring(1,this.socialusers.token.length+1));  
     console.log("###"+localStorage.getItem('userJWTtoken')); 
-    this.router.navigate([`/auth/true`]);  
+    console.log("###"+localStorage.getItem('socialusers')); 
+    if(user.role == "admin"){
+      this.router.navigate(['/auth/true/true']);  
+    }
+    else
+    this.router.navigate(['/auth/true/false']);  
+   
   })  
 }  
 
@@ -77,7 +91,8 @@ Savesresponse(socialusers: Socialusers) {
 var user = {
   method:data.user.method,
   name:data.user.local.name,
-  email:data.user.local.email
+  email:data.user.local.email,
+  role:data.user.local.role
 }
         //var user:userObj  = data.user;
       //  var user = data.user;
@@ -87,8 +102,12 @@ var user = {
         localStorage.setItem('socialusers', JSON.stringify(user));
         localStorage.setItem('userJWTtoken', token.substring(1,token.length-1)); 
         console.log(localStorage.getItem('socialusers')); 
-        console.log(localStorage.getItem('userJWTtoken')); 
-        this.router.navigate([`/auth/true`]);  
+        if(user.role == "admin"){
+          this.router.navigate(['/auth/true/true']);  
+        }
+        else
+        this.router.navigate(['/auth/true/false']);  
+       
       }
 
     });
