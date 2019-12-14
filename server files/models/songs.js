@@ -13,6 +13,7 @@ const songSchema = mongoose.Schema(
         submittedBy: {type:String},
         numberOfRatings: {type:Number},
         averageRating:{type:Number},
+        visibility:{type:Boolean}
 
        
     }

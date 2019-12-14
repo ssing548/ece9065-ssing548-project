@@ -17,20 +17,9 @@
             },
             name:{
                 type: String
-            },
-            role:{
-                type:String
             }
         },
-        google:{
-            id:{
-                type: String
-            },
-            email:{
-                type: String,
-                lowercase:true 
-            }
-        },
+        
         facebook:{
             id:{
                 type: String
@@ -42,10 +31,13 @@
             name:{
                 type: String,
                 lowercase:true 
-            },
-            role:{
-                type: String 
             }
+        },
+        role:{
+            type: String 
+        },
+        status:{
+            type:String
         }
        
     }

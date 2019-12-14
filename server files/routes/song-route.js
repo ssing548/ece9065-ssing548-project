@@ -31,7 +31,8 @@ router.put('/auth/addsong',passport.authenticate('jwt',{session:false}),(req,res
     submittedOn: req.body.submittedOn,
     submittedBy: req.body.submittedBy,
     numberOfRatings: req.body.numberOfRatings,
-    averageRating:req.body.averageRating
+    averageRating:req.body.averageRating,
+    visibility:req.body.visibility
    });
    
    newSong.save().then((newsong)=>{
@@ -43,6 +44,16 @@ router.put('/auth/addsong',passport.authenticate('jwt',{session:false}),(req,res
 
 
 router.get("/getsongs", (req, res) => {
+    Song.find({visibility: "true"}).then(data => {
+        res.json(data);
+    })
+        .catch(err => {
+            res.json({ message: err });
+        });
+
+});
+
+router.get("/auth/songsForAdmin",passport.authenticate('jwt',{session:false}), (req, res) => {
     Song.find().then(data => {
         res.json(data);
     })
@@ -52,18 +63,39 @@ router.get("/getsongs", (req, res) => {
 
 });
 
-// router.post('/signin',passport.authenticate('local',{session:false}),(req,res)=>{
-//    console.log("signin");
-//    const token = signToken(req.user);
-//    res.status(200).json({token:token});
 
-// });
+router.post('/auth/changevisibility',passport.authenticate('jwt',{session:false}),(req,res)=>{
+    console.log("changevisibility");
+    //const email = req.body.email;
+    //console.log(req.body.songTitle);
+    Song.update({'songId':req.body.songId},{$set:{
+        
+        visibility: req.body.visibility
+       
+    }}).then(()=>{
+        //res.json({user: 'created'});
+        //const token = signToken(newuser);
+        res.status(200).send();
+    })
+ });
 
-// router.get('/secret',passport.authenticate('jwt',{session:false}),(req,res)=>{
-//    console.log("secret");
-//    res.json({secret: "resource"});
+ router.delete("/auth/deleteSong",passport.authenticate('jwt',{session:false}),(req,res)=>{
+    console.log(req.body);
 
-// });
+    Song.deleteOne({  songId: req.body.songId })
+            .then(data => {
+            if(data)
+                res.status(200).send();
+            else
+                res.status(404).send();    
+            })
+        .catch(err => {
+            console.log(err);
+            res.json({ message: err });
+        });
+}); 
+
+
 
 
 module.exports = router;

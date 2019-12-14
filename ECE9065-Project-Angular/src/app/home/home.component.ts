@@ -54,9 +54,11 @@ Savesresponse(socialusers: Socialusers) {
     this.response = res.userDetail;  
     var user = {
       method:"facebook",
+      userId : res.user._id,
       name: res.user.facebook.name,
       email: res.user.facebook.email,
-      role:res.user.facebook.role
+      role:res.user.role,
+      status:res.user.status
     }
     console.log(user);
     localStorage.setItem('socialusers', JSON.stringify( user));
@@ -90,9 +92,11 @@ Savesresponse(socialusers: Socialusers) {
         // }
 var user = {
   method:data.user.method,
+  userId : data.user._id,
   name:data.user.local.name,
   email:data.user.local.email,
-  role:data.user.local.role
+  role:data.user.role,
+  status:data.user.status
 }
         //var user:userObj  = data.user;
       //  var user = data.user;

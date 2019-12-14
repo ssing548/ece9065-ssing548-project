@@ -34,8 +34,8 @@ import { ISong } from '../../songs/songs';
             submittedOn: data.submittedOn,
             submittedBy: data.submittedBy,
             numberOfRatings: data.numberOfRatings ,
-            averageRating: data.averageRating 
-
+            averageRating: data.averageRating ,
+            visibility:data.visibility
            }
          this.data.allSongs.push(addedSong);
           }

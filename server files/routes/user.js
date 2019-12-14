@@ -35,17 +35,20 @@ router.post('/signup',(req,res)=>{
         method:"local",
         local:{
         email:email,
-        password:password,
-        role:"non-admin"
-        }
+        password:password
+        },
+        role:"non-admin",
+        status:"activated"
         
     });
     newUser.save().then((newuser)=>{
         //res.json({user: 'created'});
         const token = signToken(newuser);
         res.status(200).json({token:token});
+    }).catch(err=>{
+        res.json({ message: err });
     })
-})
+});
 
 
 router.post('/signin',passport.authenticate('local',{session:false}),(req,res)=>{
@@ -60,6 +63,52 @@ router.get('/secret',passport.authenticate('jwt',{session:false}),(req,res)=>{
     res.json({secret: "resource"});
 
 });
+
+
+router.get('/getusers',passport.authenticate('jwt',{session:false}),(req,res)=>{
+    User.find().then(data => {
+        res.json(data);
+    })
+        .catch(err => {
+            res.json({ message: err });
+        });
+
+
+});
+
+router.post('/user/changeStatus',passport.authenticate('jwt',{session:false}),(req,res)=>{
+    console.log("changevisibility");
+    //const email = req.body.email;
+    //console.log(req.body.songTitle);
+  
+
+    User.findByIdAndUpdate(req.body.user.userId,{$set:{
+        
+        status: req.body.status    
+    }}).then(()=>{
+        //res.json({user: 'created'});
+        //const token = signToken(newuser);
+        res.status(200).send();
+    })
+   
+ });
+
+ router.post('/user/changeRole',passport.authenticate('jwt',{session:false}),(req,res)=>{
+    console.log("changeRole");
+    //const email = req.body.email;
+    //console.log(req.body.songTitle);
+  
+
+    User.findByIdAndUpdate(req.body.user.userId,{$set:{
+        
+        role: req.body.role    
+    }}).then(()=>{
+        //res.json({user: 'created'});
+        //const token = signToken(newuser);
+        res.status(200).send();
+    })
+   
+ });
 
 router.post('/oauth/google',passport.authenticate('googleToken',{session:false}),(req,res)=>{
     // console.log("signin");

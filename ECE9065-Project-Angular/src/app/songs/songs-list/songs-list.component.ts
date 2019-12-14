@@ -11,7 +11,9 @@ import { AddNewSongDialog } from '../add-new-song/add-song-dialog';
 import { ShowPlayListDialog } from '../../playlists/viewPlaylist/show-playlist-dialog';
 import { MatBottomSheet, MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { AddToPlaylistBottomsheet } from '../../playlists/add-to-playlist/add-to-playlist-bottomsheet';
-
+import { ReviewService} from '../../Reviews/review.service';
+import { UserService } from '../../user.service';
+import { IApplicationUser } from '../../application-users';
 @Component({
   selector: 'app-songs-list',
   templateUrl: './songs-list.component.html',
@@ -27,11 +29,14 @@ export class SongsListComponent implements OnInit {
   selected = 'songs';
   isAuth: boolean;
   isAdmin:boolean;
-  authUser:any;
+  authUser:IApplicationUser;
   songsInPlaylist: ISong[] = [];
+  applicationUsers:IApplicationUser[] = [];
+  response:any;
 
-  constructor(private songService: SongService, private playlistService: PlaylistService,
-    public dialog: MatDialog, private route: ActivatedRoute, private _bottomSheet: MatBottomSheet) {
+
+  constructor(private songService: SongService, private playlistService: PlaylistService,private reviewService:ReviewService,
+    private userService:UserService,public dialog: MatDialog, private route: ActivatedRoute, private _bottomSheet: MatBottomSheet) {
     // console.log( "param"+this.route.snapshot.queryParamMap.get("flag"));
     // this.isAuth = this.route.snapshot.queryParamMap.get('flag') == "true" ? true : false;
     // console.log(this.isAuth);
@@ -108,7 +113,8 @@ export class SongsListComponent implements OnInit {
       submittedOn: new Date(),
       submittedBy: user.email,
       numberOfRatings: 0,
-      averageRating: 0
+      averageRating: 0,
+      visibility:true
     };
     const dialogRef = this.dialog.open(AddNewSongDialog, {
       width: '400px',
@@ -174,21 +180,85 @@ export class SongsListComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(params => {
     
-      this.isAuth = params['flag']; // (+) converts string 'id' to a number
-      this.isAdmin = params['isadmin'];
+      if(params['flag'] == 'true') // (+) converts string 'id' to a number
+        this.isAuth = true;
+      else
+      this.isAuth = false;
+
+      if(params['isadmin'] == 'true')
+        this.isAdmin = true;
+       else
+        this.isAdmin = false;
+
+     
       console.log( this.isAuth , this.isAdmin);
       this.authUser = JSON.parse(localStorage.getItem("socialusers"));
-      console.log(this.isAuth)
+      console.log(this.authUser);
       // In a real app: dispatch action to load the details here.
     });
 
-    this.songService.getSongs().subscribe({
-      next: songs => {
-        this.songs = songs;
-        this.searchedSongs = this.songs;
-      },
-      error: err => this.errorMessage = err
-    });
+
+    if(this.isAdmin){
+      this.songService.getAllSongsForAdmin().subscribe({
+        next: songs => {
+          this.songs = songs;
+          this.searchedSongs = this.songs;
+        },
+        error: err => this.errorMessage = err
+      });
+
+
+      this.userService.getAllUsers().subscribe((res)=>{
+       this.response = res;
+        console.log(this.response);
+        for(var i=0;i< this.response.length;i++){
+          if(this.response[i]._id != this.authUser.userId ){
+          if( this.response[i].method == 'local' ){
+              var appuser:IApplicationUser = {
+                userId:this.response[i]._id,
+                method:"local",
+                name: this.response[i].local.name,
+                email:this.response[i].local.email,
+                role:this.response[i].role,
+                status:this.response[i].status
+              }
+    
+              this.applicationUsers.push(appuser);
+            }
+            else{
+              var appuser:IApplicationUser = {
+                userId:this.response[i]._id,
+                method:"facebook",
+                name: this.response[i].facebook.name,
+                email:this.response[i].facebook.email,
+                role:this.response[i].role,
+                status:this.response[i].status
+              }
+              this.applicationUsers.push(appuser);
+            }
+              
+
+        }}
+        console.log(this.applicationUsers);
+
+        });
+
+    
+
+    }else{
+      this.songService.getSongs().subscribe({
+        next: songs => {
+          this.songs = songs;
+          this.searchedSongs = this.songs;
+        },
+        error: err => this.errorMessage = err
+      });
+
+    }
+
+    
+
+
 
     var user = JSON.parse(localStorage.getItem("socialusers"));
     if (user) {
@@ -228,9 +298,64 @@ export class SongsListComponent implements OnInit {
         this.getListbyId(playlistId).visibility = visibility;
       }
     });
+  }
 
+  toggleSongVisibility(action: string, songId: string) {
+    var visibility: boolean;
+    if (action == "hide")
+      visibility = false;
+
+    else
+      visibility = true
+
+   // console.log("playlist id is" + playlistId);
+    this.songService.toggleVisibility(visibility, songId).subscribe(res => {
+      if (res && res.status == 200) {
+        console.log(res.status);
+        this.getSongById(songId).visibility = visibility;
+     
+      }
+    });
+  }
+  toggleUserStatus(action: string, user: IApplicationUser){
+// console.log("playlist id is" + playlistId);
+  this.userService.toggleStatus(action, user).subscribe(res => {
+  if (res && res.status == 200) {
+    console.log(res.status);
+    this.applicationUsers[this.applicationUsers.findIndex(x => x.userId == user.userId)].status = action;
+  }
+});
+}
+
+toggleAdminAccess(action: string, user: IApplicationUser){
+  // console.log("playlist id is" + playlistId);
+    this.userService.toggleAccess(action, user).subscribe(res => {
+    if (res && res.status == 200) {
+      console.log(res.status);
+      this.applicationUsers[this.applicationUsers.findIndex(x => x.userId == user.userId)].role = action;
+    }
+  });
+  }
+
+
+  deleteSong(songId:string){
+
+    if(this.getSongById(songId).numberOfRatings>0){
+      this.reviewService.deleteReviews(songId).subscribe(res => {
+        if (res && res.status == 200) {
+          console.log(res.status);
+       }
+      });
+    }
+
+    this.songService.deleteSong(songId).subscribe(res => {
+      if (res && res.status == 200) {
+       this.songs.splice(this.songs.findIndex(x => x.songId == songId),1);
+     }
+    });
 
   }
+
   onPlaylistPanelSelected(event: MatTabChangeEvent) {
 
     console.log('index => ', event.index);

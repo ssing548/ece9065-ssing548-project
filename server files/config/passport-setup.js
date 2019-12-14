@@ -54,15 +54,16 @@ passport.use('facebookToken',new FacebookTokenStarategy({
             }
            
                //if new account
-        console.log("user doesnt exists in db, creating");
-        const newUser = new User({
+            console.log("user doesnt exists in db, creating");
+            const newUser = new User({
             method:'facebook',
             facebook:{
                 id:profile.id,
                 email:profile.emails[0].value,
-                name:profile.name.givenName,
-                role:"non-admin"
-            }
+                name:profile.name.givenName
+            },
+            role:"non-admin",
+            status:"activated"
         });
     
       newUser.save().then((res)=>{

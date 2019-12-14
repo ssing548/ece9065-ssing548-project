@@ -60,6 +60,22 @@ router.get("/getreviews", (req, res) => {
 });
 
 
+router.delete("/auth/deleteAllReviews",passport.authenticate('jwt',{session:false}),(req,res)=>{
+    console.log(req.body);
+
+    Review.deleteMany({  songId: req.body.songId })
+            .then(data => {
+            if(data)
+                res.status(200).send();
+            else
+                res.status(404).send();    
+            })
+        .catch(err => {
+            console.log(err);
+            res.json({ message: err });
+        });
+}); 
+
 
 
 module.exports = router;

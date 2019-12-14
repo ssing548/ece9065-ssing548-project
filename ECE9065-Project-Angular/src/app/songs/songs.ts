@@ -10,5 +10,5 @@ export interface ISong {
     submittedBy: String;
     numberOfRatings: number;
     averageRating:number;
-    visibilty:boolean;
+    visibility:boolean;
 }

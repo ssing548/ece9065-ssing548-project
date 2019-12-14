@@ -27,7 +27,10 @@
           <span><label>Year:</label>{{ song.year }}</span>
           <span><label>Genre:</label>{{ song.genre }}</span>
           <button mat-raised-button *ngIf='isAuth' (click)="openBottomSheet(song.songId)">Add to Playlist</button>
-          <app-review [songId]='song.songId'  [isAuth]='isAuth'></app-review>
+          <button mat-raised-button *ngIf='(isAdmin && song.visibility)' (click) = "toggleSongVisibility('hide',song.songId)">Hide Song</button>
+            <button mat-raised-button *ngIf='(isAdmin && !song.visibility)' (click) = "toggleSongVisibility('show',song.songId)">Show Song</button>
+            <button mat-raised-button *ngIf='(isAdmin)' (click) = "deleteSong(song.songId)">Delete</button>
+            <app-review [songId]='song.songId'  [isAuth]='isAuth'></app-review>
 
         </mat-expansion-panel>
 
@@ -74,4 +77,26 @@
     </div>
 
   </mat-tab>
+
+  <mat-tab *ngIf='(isAdmin)'  label="Users">
+
+  
+    <mat-card *ngFor='let user of applicationUsers'>
+        <mat-card-title class= 'title'>{{user.name}}</mat-card-title>
+        <mat-card-content>
+            <span><label>Email:</label> {{user.email}}</span>
+            <span><label>Role:</label>{{ user.role}}</span>   
+          </mat-card-content>
+        <mat-card-actions>
+            <button mat-raised-button *ngIf='user.status =="activated"' (click) = "toggleUserStatus('deactivated',user)">Deactivate</button>
+            <button mat-raised-button *ngIf='user.status =="deactivated"' (click) = "toggleUserStatus('activated',user)">Activate</button>
+            <button mat-raised-button *ngIf='user.role =="admin"' (click) = "toggleAdminAccess('non-admin',user)" >Revoke Access</button>
+            <button mat-raised-button *ngIf='user.role =="non-admin"' (click) = "toggleAdminAccess('admin',user)">Grant Access</button>
+          </mat-card-actions>
+
+    </mat-card>
+
+
+  </mat-tab>
+
 </mat-tab-group>
