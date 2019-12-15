@@ -1,6 +1,6 @@
 <div class="container">
  
-  <input class="search-bar" placeholder="Search for Songs,Playlists.." type="text" [(ngModel)]='songSearchBy'>
+  <input class="search-bar" placeholder="Search for Songs,Playlists.." type="text" [(ngModel)]='searchBy'>
   
 </div>
 
@@ -62,7 +62,7 @@
 
     </div>
     <span>Other Playlists</span>
-    <div *ngFor='let playlist of playlists'> 
+    <div *ngFor='let playlist of searchedPlaylists'> 
 
     <mat-card *ngIf = '!isAuth || (isAuth && authUser.email != playlist.createdBy)' >
       <div class = "card-container" (click) = "showPlaylistDialog($event,playlist.listId)"><mat-card-title class= 'title'>{{playlist.listTitle}}</mat-card-title>
@@ -81,7 +81,7 @@
   <mat-tab *ngIf='(isAdmin)'  label="Users">
 
   
-    <mat-card *ngFor='let user of applicationUsers'>
+    <mat-card *ngFor='let user of searchedApplicationUsers'>
         <mat-card-title class= 'title'>{{user.name}}</mat-card-title>
         <mat-card-content>
             <span><label>Email:</label> {{user.email}}</span>

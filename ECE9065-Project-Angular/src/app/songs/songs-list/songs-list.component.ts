@@ -21,9 +21,10 @@ import { IApplicationUser } from '../../application-users';
 })
 export class SongsListComponent implements OnInit {
 
-  panelOpenState = false;
+  panelOpenState:string="songs" ;
   songs: ISong[] = [];
   playlists: IPlaylist[] = [];
+  searchedPlaylists: IPlaylist[] = [];
   searchedSongs: ISong[] = [];
   errorMessage = '';
   selected = 'songs';
@@ -32,6 +33,7 @@ export class SongsListComponent implements OnInit {
   authUser:IApplicationUser;
   songsInPlaylist: ISong[] = [];
   applicationUsers:IApplicationUser[] = [];
+  searchedApplicationUsers:IApplicationUser[] = [];
   response:any;
 
 
@@ -51,20 +53,44 @@ export class SongsListComponent implements OnInit {
     });
   }
 
-  _songSearchBy = '';
-  get songSearchBy(): string {
-    return this._songSearchBy;
+  _searchBy = '';
+  get searchBy(): string {
+    return this._searchBy;
   }
-  set songSearchBy(value: string) {
-    this._songSearchBy = value;
-    this.searchedSongs = this.songSearchBy ? this.performSearch(this.songSearchBy) : this.songs;
+  set searchBy(value: string) {
+    this._searchBy = value;
+    if(this.panelOpenState == 'songs')
+    this.searchedSongs = this.searchBy ? this.performSongSearch(this.searchBy) : this.songs;
+
+    if(this.panelOpenState == 'users')
+    this.searchedApplicationUsers = this.searchBy ? this.performUserSearch(this.searchBy) : this.applicationUsers;
+    
+    if(this.panelOpenState == 'playlists')
+    this.searchedPlaylists = this.searchBy ? this.performPlaylistSearch(this.searchBy) : this.playlists;
   }
 
-  performSearch(searchBy: string): ISong[] {
+  performSongSearch(searchBy: string): ISong[] {
     searchBy = searchBy.toLocaleLowerCase();
     return this.songs.filter((song: ISong) =>
-      song.songTitle.toLocaleLowerCase().indexOf(searchBy) !== -1);
+      song.songTitle.toLocaleLowerCase().indexOf(searchBy) !== -1 || 
+      song.artist.toLocaleLowerCase().indexOf(searchBy) !== -1 ||
+      song.album.toLocaleLowerCase().indexOf(searchBy) !== -1 ||
+      song.genre.toLocaleLowerCase().indexOf(searchBy) !== -1 ||
+      song.year.toString().indexOf(searchBy) !== -1 );
   }
+
+  performUserSearch(searchBy: string): IApplicationUser[] {
+    searchBy = searchBy.toLocaleLowerCase();
+    return this.applicationUsers.filter((user: IApplicationUser) =>
+      user.name.toLocaleLowerCase().indexOf(searchBy) !== -1);
+  }
+
+  performPlaylistSearch(searchBy: string): IPlaylist[] {
+    searchBy = searchBy.toLocaleLowerCase();
+    return this.playlists.filter((playlist: IPlaylist) =>
+    playlist.listTitle.toLocaleLowerCase().indexOf(searchBy) !== -1);
+  }
+
 
   showPlaylistDialog(event: Event, listId: string): void {
     //console.log(this.song);
@@ -240,6 +266,7 @@ export class SongsListComponent implements OnInit {
 
         }}
         console.log(this.applicationUsers);
+        this.searchedApplicationUsers = this.applicationUsers;
 
         });
 
@@ -266,6 +293,7 @@ export class SongsListComponent implements OnInit {
       this.playlistService.getLoggedInUserPlaylists(user.email).subscribe({
         next: playlists => {
           this.playlists = playlists;
+          this.searchedPlaylists = this.playlists;
           // this.searchedSongs = this.songs;
         },
         error: err => this.errorMessage = err
@@ -275,6 +303,7 @@ export class SongsListComponent implements OnInit {
       this.playlistService.getPlaylists().subscribe({
         next: playlists => {
           this.playlists = playlists;
+          this.searchedPlaylists = this.playlists;
           // this.searchedSongs = this.songs;
         },
         error: err => this.errorMessage = err
@@ -358,7 +387,16 @@ toggleAdminAccess(action: string, user: IApplicationUser){
 
   onPlaylistPanelSelected(event: MatTabChangeEvent) {
 
-    console.log('index => ', event.index);
+        if (event.index == 0 )
+        this.panelOpenState = 'songs';
+    
+        if (event.index == 1 )
+        this.panelOpenState = 'playlists';
+
+        if (event.index == 2 )
+        this.panelOpenState = 'users';
+
+console.log(this.panelOpenState);
 
   }
 
