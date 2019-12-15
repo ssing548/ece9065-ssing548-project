@@ -1,18 +1,5 @@
-<!-- <div class="toolbar" role="banner">
-
-  <h3>My Music App</h3>
-  <div class="spacer"></div>
-  <ul>
-    <li><a href="#home">Sign in</a></li>
-
-    <li><a href="#about">Sign up</a></li>
-  </ul>
-</div> -->
 <mat-toolbar color="primary">
   <div>Music Cloud</div>
-
-  <!-- This fills the remaining space of the current row -->
-  <!-- <span class="example-fill-remaining-space"></span> -->
 
   <div class = "navbar"><ul>
     <li><a [routerLink]="['/login']"  *ngIf = '!navService.isloggedin'>Sign in</a></li>
