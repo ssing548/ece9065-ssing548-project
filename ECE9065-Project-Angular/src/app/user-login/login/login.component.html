@@ -11,8 +11,9 @@
         <mat-error *ngIf="password.invalid">{{getPasswordMessage()}}</mat-error>        
 </mat-form-field>
 <button mat-raised-button [disabled]="(!email.valid && !password.required)"  class= "submit-button" (click) = 'submit()'>Submit</button>
-<hr>
-<p> or Login With</p>
+<span> or Login With</span>
 <button mat-raised-button class="facebook-button" (click)="socialSignIn('facebook')" >Facebook</button>
-
+<hr>
+<p>New Users can Register Here!</p>
+<button mat-raised-button class="signup-button" (click)="signup()" >Sign up</button>
 </div>

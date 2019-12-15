@@ -6,17 +6,6 @@
  const JWT = require("jsonwebtoken");
  const passport = require('passport');
  const passportConfig = require("../config/passport-setup");
-// const UserController = require("../controllers/users");
-
-
-
-// router.get('/google',passport.authenticate('google',{
-//     scope: ['profile']
-// }));
-
-// router.get('/google/redirect',passport.authenticate('google'),(req,res)=>{
-//     res.send(req.user);
-// });
 
 signToken = user => {
     return JWT.sign({
@@ -27,40 +16,60 @@ signToken = user => {
     },keys.jwt.secret);
 }
 
-router.post('/signup',(req,res)=>{
+router.put('/signup',(req,res)=>{
     console.log("signup");
+    const name = req.body.name;
     const email = req.body.email;
     const password = req.body.password;
-    const newUser = new User({
-        method:"local",
-        local:{
-        email:email,
-        password:password
-        },
-        role:"non-admin",
-        status:"activated"
+    userExist:boolean = false;
+    User.find()
+    .then(data => {
         
-    });
-    newUser.save().then((newuser)=>{
-        //res.json({user: 'created'});
-        const token = signToken(newuser);
-        res.status(200).json({token:token});
-    }).catch(err=>{
-        res.json({ message: err });
+        for(var i=0;i<data.length;i++){
+                if(data[i].local && data[i].local.email == email)
+                    this.userExist = true;
+        }
+
+        if(this.userExist) {
+            
+            res.status(202).json("User Exists!");
+        }
+        else{
+            const newUser = new User({
+                method:"local",
+                local:{
+                name:name,
+                email:email,
+                password:password
+                },
+                role:"non-admin",
+                status:"activated"
+                
+            });
+        
+        
+            newUser.save().then((newuser)=>{
+                const token = signToken(newuser);
+                res.status(200).json({token:token});
+            }).catch(err=>{
+                res.json({ message: err });
+            })
+        }
+        
     })
+        .catch(err => {
+            res.json({ message: err });
+        });
+
+
 });
 
 
 router.post('/signin',passport.authenticate('local',{session:false}),(req,res)=>{
-    console.log("signin");
+    
+   
     const token = signToken(req.user);
     res.status(200).json({token:token,user:req.user});
-
-});
-
-router.get('/secret',passport.authenticate('jwt',{session:false}),(req,res)=>{
-    console.log("secret");
-    res.json({secret: "resource"});
 
 });
 
@@ -77,17 +86,13 @@ router.get('/getusers',passport.authenticate('jwt',{session:false}),(req,res)=>{
 });
 
 router.post('/user/changeStatus',passport.authenticate('jwt',{session:false}),(req,res)=>{
-    console.log("changevisibility");
-    //const email = req.body.email;
-    //console.log(req.body.songTitle);
-  
+   
 
     User.findByIdAndUpdate(req.body.user.userId,{$set:{
         
         status: req.body.status    
     }}).then(()=>{
-        //res.json({user: 'created'});
-        //const token = signToken(newuser);
+        
         res.status(200).send();
     })
    
@@ -95,28 +100,17 @@ router.post('/user/changeStatus',passport.authenticate('jwt',{session:false}),(r
 
  router.post('/user/changeRole',passport.authenticate('jwt',{session:false}),(req,res)=>{
     console.log("changeRole");
-    //const email = req.body.email;
-    //console.log(req.body.songTitle);
-  
+   
 
     User.findByIdAndUpdate(req.body.user.userId,{$set:{
         
         role: req.body.role    
     }}).then(()=>{
-        //res.json({user: 'created'});
-        //const token = signToken(newuser);
+       
         res.status(200).send();
     })
    
  });
-
-router.post('/oauth/google',passport.authenticate('googleToken',{session:false}),(req,res)=>{
-    // console.log("signin");
-     const token = signToken(req.user);
-   
-     res.status(200).json({token:token});
-
-});
 
 
 router.post('/oauth/facebook',passport.authenticate('facebookToken',{session:false}),(req,res,next)=>{

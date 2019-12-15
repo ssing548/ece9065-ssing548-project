@@ -39,16 +39,14 @@ export class SongsListComponent implements OnInit {
 
   constructor(private songService: SongService, private playlistService: PlaylistService,private reviewService:ReviewService,
     private userService:UserService,public dialog: MatDialog, private route: ActivatedRoute, private _bottomSheet: MatBottomSheet) {
-    // console.log( "param"+this.route.snapshot.queryParamMap.get("flag"));
-    // this.isAuth = this.route.snapshot.queryParamMap.get('flag') == "true" ? true : false;
-    // console.log(this.isAuth);
   }
 
   openBottomSheet(songId: string): void {
     this._bottomSheet.open(AddToPlaylistBottomsheet, {
       data: {
         playlists: this.playlists,
-        songId: songId
+        songId: songId,
+        loggedInUser:this.authUser
       }
     });
   }
@@ -93,15 +91,12 @@ export class SongsListComponent implements OnInit {
 
 
   showPlaylistDialog(event: Event, listId: string): void {
-    //console.log(this.song);
     var plist = this.getListbyId(listId);
     var plsongs: ISong[] = [];
-    console.log(plist);
     for (var i = 0; i < plist.songs.length; i++) {
       plsongs.push(this.getSongById(plist.songs[i]))
     }
 
-    console.log(plsongs[0]);
     const dialogRef = this.dialog.open(ShowPlayListDialog, {
       width: '400px',
       data: {
@@ -111,6 +106,8 @@ export class SongsListComponent implements OnInit {
     });
 
   }
+
+  
   getListbyId(listId: string) {
     for (var i = 0; i < this.playlists.length; i++) {
       if (this.playlists[i].listId === listId)
@@ -118,13 +115,31 @@ export class SongsListComponent implements OnInit {
 
     }
   }
+
+
   getSongById(songId: String): ISong {
+    var i = 0 ;
     for (var i = 0; i < this.songs.length; i++) {
       if (this.songs[i].songId == songId) {
-        console.log("i am returning " + this.songs[i].songId);
         return this.songs[i];
       }
     }
+    var dummy:ISong = {
+      songId:"",
+      songTitle: "",
+      artist: "",
+      album: "",
+      year: 0,
+      comment: "",
+      genre: "",
+      submittedOn: new Date,
+      submittedBy: "",
+      numberOfRatings: 0,
+      averageRating:0,
+      visibility:false
+    }
+
+    return dummy;
   }
 
   showAddSongDialog() {

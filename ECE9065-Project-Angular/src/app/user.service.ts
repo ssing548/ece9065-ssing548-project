@@ -47,7 +47,7 @@ toggleAccess(action: string, user: IApplicationUser) :Observable<any>  {
         return this.http.post(this.url,{
           "email": email,
           "password":password
-        });
+        },{observe:'response'});
       }
     
       
@@ -59,6 +59,16 @@ toggleAccess(action: string, user: IApplicationUser) :Observable<any>  {
       );
         
 }
+
+  userSignup(name:string,email:string,password:string):Observable<any> {
+    this.url = 'http://localhost:3000/auth/signup';
+    return this.http.put(this.url,{
+      "name": name,
+      "email": email,
+      "password":password
+    },{observe:'response'});
+
+  } 
 
   
 }

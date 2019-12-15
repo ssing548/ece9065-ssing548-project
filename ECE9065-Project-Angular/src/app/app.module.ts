@@ -27,7 +27,6 @@ import { GoogleLoginProvider, FacebookLoginProvider,AuthService } from 'angular-
 import { SocialLoginModule, AuthServiceConfig } from 'angular-6-social-login'; 
 import {AddToPlaylistBottomsheet} from './playlists/add-to-playlist/add-to-playlist-bottomsheet';
 import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
-import {PlaylistSnackBar} from './playlists/add-to-playlist/info-snackbar';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { UserTokenInterceptor } from './user-token-interceptor';
@@ -35,6 +34,7 @@ import {AuthGuard} from './auth.guard';
 import { LoginComponent } from './user-login/login/login.component';
 import {MatIconModule} from '@angular/material/icon';
 import {MatGridListModule} from '@angular/material/grid-list';
+import { SignupComponent } from './user-login/signup/signup.component';
 
 export function socialConfigs() {  
   const config = new AuthServiceConfig(  
@@ -64,8 +64,8 @@ export function socialConfigs() {
     AddNewSongDialog,
     CreateNewPlaylistDialog,
     AddToPlaylistBottomsheet,
-    PlaylistSnackBar,
-    LoginComponent
+    LoginComponent,
+    SignupComponent
   ],
   imports: [
     BrowserModule,

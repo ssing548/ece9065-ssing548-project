@@ -1,10 +1,11 @@
-import { Component, OnInit, Output,EventEmitter } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {FormControl, Validators} from '@angular/forms';
 import { UserService } from '../../user.service';
 import { FacebookLoginProvider, AuthService } from 'angular-6-social-login';  
 import { Router } from '@angular/router';  
 import { Socialusers } from '../../social-users';
 import { NavbarService}  from '../navbar.service';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +15,7 @@ import { NavbarService}  from '../navbar.service';
 export class LoginComponent implements OnInit {
 
 
-  constructor(private userService:UserService, private router: Router,public OAuth: AuthService,private navService:NavbarService ) { }
+  constructor(private _snackBar: MatSnackBar,private userService:UserService, private router: Router,public OAuth: AuthService,private navService:NavbarService ) { }
 
   ngOnInit() {
   }
@@ -33,22 +34,27 @@ export class LoginComponent implements OnInit {
   getPasswordMessage() {
     return this.password.hasError('required') ? 'You must enter a value' :'';
   }
-
+  signup(){
+    this.router.navigate(['/signup']);
+  }
 
   submit(){
     this.userService.verifyUser(this.email.value,this.password.value).subscribe(data=>{
-      if(data){
-        var token:string  =  JSON.stringify(data.token);
+      console.log(JSON.stringify(data));
+      
+        var token:string  =  JSON.stringify(data.body.token);
       
         var user = {
-        method:data.user.method,
-        userId : data.user._id,
-        name:data.user.local.name,
-        email:data.user.local.email,
-        role:data.user.role,
-        status:data.user.status
+        method:data.body.user.method,
+        userId :data.body.user._id,
+        name:data.body.user.local.name,
+        email:data.body.user.local.email,
+        role:data.body.user.role,
+        status:data.body.user.status
         }
-      
+
+        console.log(user);
+        if(user.status == 'activated'){
         localStorage.setItem('socialusers', JSON.stringify(user));
         localStorage.setItem('userJWTtoken', token.substring(1,token.length-1)); 
         console.log(localStorage.getItem('socialusers')); 
@@ -59,11 +65,22 @@ export class LoginComponent implements OnInit {
         }
         else
         this.router.navigate(['/auth/true/false']);  
-       }
 
+        }
+        else{
+          this.openSnackBar("User is Deactivated.","OK");
+        }
+       
+
+    },error=>{
+      this.openSnackBar("Wrong Email Password Combination","OK");
     });
   }
-
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 4000,
+    });
+  }
 
   public socialSignIn(socialProvider: string) {  
     let socialPlatformProvider;  
@@ -94,6 +111,7 @@ export class LoginComponent implements OnInit {
         status:res.user.status
       }
       console.log(user);
+      if(user.status == 'activated'){
       localStorage.setItem('socialusers', JSON.stringify( user));
       localStorage.setItem('userJWTtoken', JSON.stringify( this.socialusers.token).substring(1,this.socialusers.token.length+1));  
       console.log("###"+localStorage.getItem('userJWTtoken')); 
@@ -105,7 +123,10 @@ export class LoginComponent implements OnInit {
       }
       else
       this.router.navigate(['/auth/true/false']);  
-     
+    }
+    else{
+      this.openSnackBar("User is Deactivated.","OK");
+    }
     })  
   }  
 }

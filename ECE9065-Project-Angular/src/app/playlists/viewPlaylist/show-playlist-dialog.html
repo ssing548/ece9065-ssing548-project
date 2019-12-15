@@ -1,6 +1,7 @@
 <h2 mat-dialog-title>{{data.playlist.listTitle}}</h2>
 <mat-dialog-content class="mat-typography">
-        <mat-card  *ngFor='let song of data.songs' >
+        <div  *ngFor='let song of data.songs' >
+        <mat-card *ngIf = 'song.visibility' >
                 <mat-card-title class= 'title' >  <mat-icon>music_note</mat-icon>{{song.songTitle}}</mat-card-title>
                 <!-- <mat-card-subtitle>{{playlist.listDesc}}</mat-card-subtitle> -->
                 <mat-card-content>
@@ -8,6 +9,7 @@
                 <span><label><b>Album:</b></label> {{ song.album}}</span>   
               </mat-card-content>  
               </mat-card>
+            </div>
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-button mat-dialog-close>OK</button>

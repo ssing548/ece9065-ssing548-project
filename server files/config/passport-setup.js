@@ -8,8 +8,6 @@
  const User  = require("../models/user");
 
 
-// const User  = require("../models/user");
-
  passport.use(new jwtStarategy({
     jwtFromRequest:ExtractJwt.fromHeader('authorization'),
     secretOrKey: keys.jwt.secret
@@ -32,8 +30,6 @@
     }
 
  }));
-
-
 
 
 passport.use('facebookToken',new FacebookTokenStarategy({
@@ -97,61 +93,6 @@ passport.use('facebookToken',new FacebookTokenStarategy({
 }));
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- passport.use('googleToken',new GooglePlusTokenStarategy({
-    clientID : keys.google.clientID,
-    clientSecret : keys.google.clientSecret
- },async (accessToken,refreshToken,profile,done)=>{
-
-    try {
-        console.log("accessToken"+accessToken);
-        console.log("refreshToken"+refreshToken);
-        console.log("profile"+profile);
-
-    //check if user exists
-    const existingUser = await User.findOne({"google.id": profile.id});
-    if(existingUser){
-        console.log("user exists in db");
-        return done(null,existingUser);
-    }
-   
-
-    //if new account
-    console.log("user doesnt exists in db, creating");
-    const newUser = new User({
-        method:'google',
-        google:{
-            id:profile.id,
-            email:profile.emails[0].value
-        }
-    });
-
-    await newUser.save();
-    done(null,newUser);
-
-
-    } catch (error) {
-        done(error,false,error.message);
-    }
-
- }));
-
-
-
-
  passport.use('local',new LocalStarategy({
     usernameField: 'email'
  },async (email,password,done)=>{
@@ -161,9 +102,11 @@ passport.use('facebookToken',new FacebookTokenStarategy({
          const user = await User.findOne({"local.email":email});
 
          //if not handle it
-         if(!user)
-         return done(null,false);
- 
+         if(!user){ 
+           
+            return done(null,false);
+         }
+        
          //if foound check if coredct password
          //console.log("user is " + user);
          const isMatch = await user.isValidPassword(password);
@@ -176,44 +119,9 @@ passport.use('facebookToken',new FacebookTokenStarategy({
          //otherwise return user
          done(null,user);
     } catch (error) {
+        console.log('error');
         done(error,false);
     }
        
  }));
 
-// passport.serializeUser((user,done)=>{
-//     done(null,user.id);
-// });
-
-// passport.deserializeUser((id,done)=>{
-//     User.findById(id).then((user)=>{
-//         done(null,user);
-//     })
-    
-// });
-
-
-// passport.use(new GoogleStrategy({
-//     //options for google starategy
-//     callbackURL: '/auth/google/redirect',
-//     clientID : keys.google.clientID,
-//     clientSecret : keys.google.clientSecret
-// },(accessToken,refreshToken,profile,done)=>{
-//    User.findOne({googleId:profile.id}).then((currentUser)=>{
-//         if(currentUser){
-//             console.log("user is:"+currentUser);
-//             done(null,currentUser);
-
-//         }else{
-//             new User({
-//                 username: profile.displayName,
-//                 googleId: profile.id
-//             }).save().then((newUser)=>{
-//                 console.log("new user created : "+newUser);
-//                 done(null,newUser);
-//             });
-
-//         }
-//    })  
-// })
-// )
