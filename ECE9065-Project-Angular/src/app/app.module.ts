@@ -15,7 +15,7 @@ import { ReviewComponent } from './Reviews/review/review.component';
 import { AddReviewDialog } from './Reviews/add-review/add-new-review';
 import {MatCardModule} from '@angular/material/card';
 import {MatTabsModule} from '@angular/material/tabs';
-import { FormsModule} from '@angular/forms';
+import { FormsModule,ReactiveFormsModule} from '@angular/forms';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatInputModule} from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -32,6 +32,8 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { UserTokenInterceptor } from './user-token-interceptor';
 import {AuthGuard} from './auth.guard';
+import { LoginComponent } from './user-login/login/login.component';
+
 
 export function socialConfigs() {  
   const config = new AuthServiceConfig(  
@@ -61,7 +63,8 @@ export function socialConfigs() {
     AddNewSongDialog,
     CreateNewPlaylistDialog,
     AddToPlaylistBottomsheet,
-    PlaylistSnackBar
+    PlaylistSnackBar,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -74,6 +77,7 @@ export function socialConfigs() {
     MatCardModule,
     MatTabsModule,
     FormsModule,
+    ReactiveFormsModule,
     MatDialogModule,
     MatInputModule,
     MatSelectModule,

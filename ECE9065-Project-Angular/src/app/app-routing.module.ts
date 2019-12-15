@@ -3,9 +3,11 @@ import { Routes, RouterModule } from '@angular/router';
 import { SongsListComponent } from './songs/songs-list/songs-list.component';
 import { HomeComponent } from './home/home.component';
 import {AuthGuard} from './auth.guard';
+import { LoginComponent } from './user-login/login/login.component';
 
 const routes: Routes = [ 
   {path:'',component:HomeComponent},
+  {path:'login',component:LoginComponent},
   {path:'songsList',component:SongsListComponent},
   {path:'auth/:flag/:isadmin',component:SongsListComponent,canActivate:[AuthGuard]},
 //  {path:'auth/:flag',component:SongsListComponent,canActivate:[AuthGuard]},

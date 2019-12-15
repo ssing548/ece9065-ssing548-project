@@ -9,15 +9,13 @@
   </ul>
 </div> -->
 <mat-toolbar color="primary">
-  <div>My Music</div>
+  <div>Music Cloud</div>
 
   <!-- This fills the remaining space of the current row -->
   <!-- <span class="example-fill-remaining-space"></span> -->
 
   <div class = "navbar"><ul>
-    <li><a [routerLink]="['/auth', 'true']">Sign in</a></li>
-
-    <li><button mat-raised-button (click) = 'getResource()' >secret</button></li>
+    <li><a [routerLink]="['/login']">Sign in</a></li>
     <li> <button mat-raised-button (click) = 'logout()' >Logout</button></li>
   </ul></div>
 </mat-toolbar>
