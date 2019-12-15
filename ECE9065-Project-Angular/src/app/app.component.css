@@ -56,7 +56,8 @@
   }
 
   .navbar ul li {
-    float: left;
+    display: inline-block;
+    margin:20px;
   }
 
   .navbar ul li a{
@@ -68,4 +69,4 @@
         text-decoration: none;
       
   }
-  
+ 

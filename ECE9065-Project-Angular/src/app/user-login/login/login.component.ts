@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output,EventEmitter } from '@angular/core';
 import {FormControl, Validators} from '@angular/forms';
 import { UserService } from '../../user.service';
 import { FacebookLoginProvider, AuthService } from 'angular-6-social-login';  
 import { Router } from '@angular/router';  
-import { Socialusers } from '../../social-users'  
+import { Socialusers } from '../../social-users';
+import { NavbarService}  from '../navbar.service';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -11,7 +13,8 @@ import { Socialusers } from '../../social-users'
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private userService:UserService, private router: Router,public OAuth: AuthService ) { }
+
+  constructor(private userService:UserService, private router: Router,public OAuth: AuthService,private navService:NavbarService ) { }
 
   ngOnInit() {
   }
@@ -49,6 +52,8 @@ export class LoginComponent implements OnInit {
         localStorage.setItem('socialusers', JSON.stringify(user));
         localStorage.setItem('userJWTtoken', token.substring(1,token.length-1)); 
         console.log(localStorage.getItem('socialusers')); 
+        this.navService.isloggedin = true;
+        this.navService.loggedInUser = user;
         if(user.role == "admin"){
           this.router.navigate(['/auth/true/true']);  
         }
@@ -93,6 +98,8 @@ export class LoginComponent implements OnInit {
       localStorage.setItem('userJWTtoken', JSON.stringify( this.socialusers.token).substring(1,this.socialusers.token.length+1));  
       console.log("###"+localStorage.getItem('userJWTtoken')); 
       console.log("###"+localStorage.getItem('socialusers')); 
+      this.navService.isloggedin = true;
+      this.navService.loggedInUser = user;
       if(user.role == "admin"){
         this.router.navigate(['/auth/true/true']);  
       }

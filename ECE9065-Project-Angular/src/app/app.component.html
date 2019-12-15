@@ -15,9 +15,11 @@
   <!-- <span class="example-fill-remaining-space"></span> -->
 
   <div class = "navbar"><ul>
-    <li><a [routerLink]="['/login']">Sign in</a></li>
-    <li> <button mat-raised-button (click) = 'logout()' >Logout</button></li>
-  </ul></div>
+    <li><a [routerLink]="['/login']"  *ngIf = '!navService.isloggedin'>Sign in</a></li>
+    <li *ngIf = 'navService.isloggedin'><p>{{navService.loggedInUser.name}}</p></li>
+    <li>  <button mat-raised-button *ngIf = 'navService.isloggedin' (click) = 'logout()'  >Logout</button></li>
+  </ul>
+ </div>
 </mat-toolbar>
 
 <router-outlet></router-outlet>
