@@ -35,6 +35,9 @@ import { IReview } from '../review';
             
            }
          this.data.allReviews.push(addedReview);
+         console.log(this.data.newReview.rating);
+         this.data.avgRating = Math.round((this.data.avgRating*(this.data.allReviews.length-1) +  this.data.newReview.rating)/ this.data.allReviews.length);
+         console.log(this.data.avgRating);
         }
 
       }, error => {

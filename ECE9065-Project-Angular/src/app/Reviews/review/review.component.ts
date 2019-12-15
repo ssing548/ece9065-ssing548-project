@@ -17,16 +17,13 @@ export class ReviewComponent implements OnInit {
   @Input() isAuth;
   reviews: IReview[] = [];
   errorMessage = '';
-
+  avgRating:number=0;
+   
  
   constructor(private reviewService: ReviewService, public dialog: MatDialog) { }
 
   openDialog(): void {
-    // var reviewText: string = "";
-    // var rating: number;
-    // const dialogConfig = new MatDialogConfig();
-
-    // dialogConfig.disableClose = true;
+  
     console.log(this.songId);
     var user = JSON.parse(localStorage.getItem("socialusers"));
     var newReview:IReview = {
@@ -44,28 +41,28 @@ export class ReviewComponent implements OnInit {
 
       width: '290px',
       data: { newReview: newReview,
-              allReviews: this.reviews }
+              allReviews: this.reviews,
+              avgRating:this.avgRating }
     });
-
-    // dialogRef.afterClosed().subscribe(result => {
-    //   console.log('The dialog was closed');
-    //   reviewText = result.reviewText;
-    //   rating = result.rating;
-    //   console.log(reviewText + rating);
-    //   this.addReview(reviewText,rating);
-    // });
-
-
   }
 
+  calculateAvgRating(){
+    for(var i = 0 ;i< this.reviews.length;i++){
+      this.avgRating = this.avgRating + this.reviews[i].rating;
+    }
+    this.avgRating =  Math.round(this.avgRating/this.reviews.length);
+  }
   ngOnInit() {
     console.log(this.songId);
     this.reviewService.getReviews(this.songId).subscribe({
       next: reviews => {
         this.reviews = reviews;
+        this.calculateAvgRating();
       },
       error: err => this.errorMessage = err
     });
+
+    
   }
 }
 

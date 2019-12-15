@@ -1,6 +1,8 @@
 <hr>
 <h4>Reviews</h4>
+
 <div *ngIf='reviews.length>0  else noreviews' >
+                <p id = "info"><span>Number of Reviews:{{reviews.length}} </span><span> Average Rating:{{avgRating}} </span></p>
 <div class = "review-container" *ngFor='let review of reviews'>
 <div class = "inline-show"><span><b>{{review.submitedBy}}</b></span><span>{{review.reviewDesc}}</span>
         

@@ -4,4 +4,5 @@ export interface AddReviewDialogData {
     // rating: number;
     newReview:IReview;
     allReviews:IReview[];
+    avgRating:number;
   }
