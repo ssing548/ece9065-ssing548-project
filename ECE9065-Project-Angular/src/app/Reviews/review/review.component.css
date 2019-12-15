@@ -17,3 +17,12 @@ p{
     font-family: sans-serif;
     font-size: 15px;
 }
+
+span{
+    padding:0px 20px;
+    display:block;
+}
+.star{
+    float: right;
+    margin-top: 7px;
+}

@@ -12,7 +12,7 @@ export class SongService {
     return this.http.get<ISong[]>('http://localhost:3000/song/auth/songsForAdmin')
       .pipe(
         tap(data => console.log('All: ' + JSON.stringify(data))),
-        map(data => data.sort((a,b)=> b.averageRating - a.averageRating))
+        map(data => data.sort((a,b)=> b.numberOfRatings - a.numberOfRatings))
        
       );
   }

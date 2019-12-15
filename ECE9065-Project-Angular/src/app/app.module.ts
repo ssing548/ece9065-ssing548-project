@@ -33,7 +33,8 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { UserTokenInterceptor } from './user-token-interceptor';
 import {AuthGuard} from './auth.guard';
 import { LoginComponent } from './user-login/login/login.component';
-
+import {MatIconModule} from '@angular/material/icon';
+import {MatGridListModule} from '@angular/material/grid-list';
 
 export function socialConfigs() {  
   const config = new AuthServiceConfig(  
@@ -85,7 +86,9 @@ export function socialConfigs() {
     MatButtonToggleModule,
     RatingModule,
     MatBottomSheetModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatIconModule,
+    MatGridListModule
   ],
   providers: [AuthService,AuthGuard,
     {  

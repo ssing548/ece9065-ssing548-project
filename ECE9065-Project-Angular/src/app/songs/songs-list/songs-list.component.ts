@@ -96,11 +96,12 @@ export class SongsListComponent implements OnInit {
     //console.log(this.song);
     var plist = this.getListbyId(listId);
     var plsongs: ISong[] = [];
+    console.log(plist);
     for (var i = 0; i < plist.songs.length; i++) {
       plsongs.push(this.getSongById(plist.songs[i]))
     }
 
-    console.log("hi" + plsongs[0]);
+    console.log(plsongs[0]);
     const dialogRef = this.dialog.open(ShowPlayListDialog, {
       width: '400px',
       data: {

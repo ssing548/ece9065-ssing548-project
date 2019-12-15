@@ -1,6 +1,6 @@
 <div class="container">
  
-  <input class="search-bar" placeholder="Search for Songs,Playlists.." type="text" [(ngModel)]='searchBy'>
+  <input class="search-bar" placeholder="Search.." type="text" [(ngModel)]='searchBy'>
   
 </div>
 
@@ -10,12 +10,15 @@
     <button mat-raised-button class = "song-upload-button" *ngIf='isAuth' (click) = "showAddSongDialog()">Upload new Song</button>
     </div>
     <div>
+      <h3 class="filter">Filter: Most Reviewd Songs</h3>
       <mat-accordion>
 
         <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false"
           *ngFor='let song of searchedSongs'>
           <mat-expansion-panel-header>
-            <mat-panel-title class="title">
+            
+              
+            <mat-panel-title class="title">  <mat-icon>music_note</mat-icon>
               {{ song.songTitle }}
             </mat-panel-title>
             <mat-panel-description>
@@ -49,7 +52,7 @@
             <div class = "card-container" (click) = "showPlaylistDialog($event,playlist.listId)"><mat-card-title class= 'title'>{{playlist.listTitle}}</mat-card-title>
             <mat-card-subtitle>{{playlist.listDesc}}</mat-card-subtitle>
             <mat-card-content>
-            <span><label>Songs#</label> {{playlist.songs.length}}</span>
+            <span><label>Songs:</label> {{playlist.songs.length}}</span>
             <span><label>Created By:</label>{{ playlist.createdBy}}</span>   
           </mat-card-content>  </div>
           <mat-card-actions>
@@ -61,21 +64,25 @@
     </div>
 
     </div>
-    <span>Other Playlists</span>
-    <div *ngFor='let playlist of searchedPlaylists'> 
+    <h3 class="filter">All Playlists</h3>
 
-    <mat-card *ngIf = '!isAuth || (isAuth && authUser.email != playlist.createdBy)' >
-      <div class = "card-container" (click) = "showPlaylistDialog($event,playlist.listId)"><mat-card-title class= 'title'>{{playlist.listTitle}}</mat-card-title>
-      <mat-card-subtitle>{{playlist.listDesc}}</mat-card-subtitle>
-      <mat-card-content>
-      <span><label>Songs#</label> {{playlist.songs.length}}</span>
-      <span><label>Created By:</label>{{ playlist.createdBy}}</span>   
-    </mat-card-content>  </div>
-    <mat-card-actions>
-    </mat-card-actions>
-    </mat-card>
-    </div>
+    <mat-grid-list cols="3" rowHeight="200px" >
+        <mat-grid-tile *ngFor='let playlist of searchedPlaylists'>
+            <mat-card *ngIf = '!isAuth || (isAuth && authUser.email != playlist.createdBy)' >
+                <div class = "card-container" (click) = "showPlaylistDialog($event,playlist.listId)"><mat-card-title class= 'title'>
+                    <mat-icon>library_music</mat-icon> {{playlist.listTitle}}</mat-card-title>
+                <mat-card-subtitle>{{playlist.listDesc}}</mat-card-subtitle>
+                <mat-card-content>
+                <span><label>Songs:</label> {{playlist.songs.length}}</span>
+                <span><label>Created By:</label>{{ playlist.createdBy}}</span>   
+              </mat-card-content>  </div>
+              <mat-card-actions>
+              </mat-card-actions>
+              </mat-card>
 
+        </mat-grid-tile>
+       
+      </mat-grid-list>
   </mat-tab>
 
   <mat-tab *ngIf='(isAdmin)'  label="Users">

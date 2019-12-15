@@ -4,6 +4,7 @@ import { PlaylistDialogData } from './show-playlist-dialog-data';
 @Component({
     selector: 'show-playlist-dialog',
     templateUrl: './show-playlist-dialog.html',
+    styleUrls: ['./show-playlist-dialog.css']
   })
   export class ShowPlayListDialog {
   
