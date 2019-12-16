@@ -38,6 +38,8 @@ export class LoginComponent implements OnInit {
     this.router.navigate(['/signup']);
   }
 
+  //Method for Service call to verify credentials of Local user and 
+  //navigating on being admin/non admin
   submit(){
     this.userService.verifyUser(this.email.value,this.password.value).subscribe(data=>{
       console.log(JSON.stringify(data));
@@ -76,12 +78,15 @@ export class LoginComponent implements OnInit {
       this.openSnackBar("Wrong Email Password Combination","OK");
     });
   }
+
+  //Method to open snackbar
   openSnackBar(message: string, action: string) {
     this._snackBar.open(message, action, {
       duration: 4000,
     });
   }
 
+  //Method to handle login by Facebook
   public socialSignIn(socialProvider: string) {  
     let socialPlatformProvider;  
     if (socialProvider === 'facebook') {  

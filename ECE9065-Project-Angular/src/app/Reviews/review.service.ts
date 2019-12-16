@@ -9,29 +9,18 @@ import { catchError, tap, map, filter } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class ReviewService {
-  deleteReviews(songId: string):Observable<any> {
-    return this.http.request("DELETE",'http://localhost:3000/review/auth/deleteAllReviews',{
-      headers: new HttpHeaders({
-          
-      }),
-    body:{songId}, observe: 'response' });
-    
-    //return this.http.delete('http://localhost:3000/review/auth/deleteAllReviews',{ observe: 'response' });
-  }
-  
-  private songUrl = 'assets/reviews.json';
 
   constructor(private http: HttpClient) { }
 
-  // getReviews(songId:String): Observable<IReview[]>{
-  //   return this.http.get<IReview[]>('http://localhost:3000/auth/review/getreviews')
-  //     .pipe(
-  //       tap(data => console.log('All: ' + JSON.stringify(data))),
-  //      map(data => data.filter( data  => data.songId == songId)),
-  //      map(data => data.sort((a, b) => new Date(b.submittedOn).getTime() - new Date(a.submittedOn).getTime()))
-       
-  //     );
-  // }
+ //Method to Delete all reviews for a song from Database
+  deleteReviews(songId: string):Observable<any> {
+    return this.http.request("DELETE",'http://localhost:3000/review/auth/deleteAllReviews',{
+      headers: new HttpHeaders({ }),
+    body:{songId}, observe: 'response' });
+    
+  }
+  
+  //Method to Fetch all reviews for a song from Database and sort them by Date
   getReviews(songId:String): Observable<IReview[]>{
     return this.http.get<IReview[]>('http://localhost:3000/review/getreviews')
       .pipe(
@@ -41,6 +30,8 @@ export class ReviewService {
        
       );
   }
+
+//Method to add new reviews for a song into Database
   addNewReview(newReview: IReview):Observable<any> {
     console.log(newReview);
     return this.http.put('http://localhost:3000/review/auth/addreview',newReview);

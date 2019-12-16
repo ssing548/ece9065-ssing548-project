@@ -18,5 +18,7 @@
 </div>
 <div mat-dialog-actions>
     <button mat-button (click)="onNoClick()">Cancel</button>
-    <button mat-button [mat-dialog-close]="data" (click) = "save()" cdkFocusInitial>Ok</button>
+
+    <button *ngIf = '!(data.newSong.songTitle == "" || data.newSong.artist == "")' mat-button [mat-dialog-close]="data" (click) = "save()" cdkFocusInitial>Ok</button>
+
 </div>

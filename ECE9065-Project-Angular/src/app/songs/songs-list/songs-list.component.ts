@@ -11,7 +11,7 @@ import { AddNewSongDialog } from '../add-new-song/add-song-dialog';
 import { ShowPlayListDialog } from '../../playlists/viewPlaylist/show-playlist-dialog';
 import { MatBottomSheet, MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { AddToPlaylistBottomsheet } from '../../playlists/add-to-playlist/add-to-playlist-bottomsheet';
-import { ReviewService} from '../../Reviews/review.service';
+import { ReviewService } from '../../Reviews/review.service';
 import { UserService } from '../../user.service';
 import { IApplicationUser } from '../../application-users';
 @Component({
@@ -21,7 +21,7 @@ import { IApplicationUser } from '../../application-users';
 })
 export class SongsListComponent implements OnInit {
 
-  panelOpenState:string="songs" ;
+  panelOpenState: string = "songs";
   songs: ISong[] = [];
   playlists: IPlaylist[] = [];
   searchedPlaylists: IPlaylist[] = [];
@@ -29,24 +29,25 @@ export class SongsListComponent implements OnInit {
   errorMessage = '';
   selected = 'songs';
   isAuth: boolean;
-  isAdmin:boolean;
-  authUser:IApplicationUser;
+  isAdmin: boolean;
+  authUser: IApplicationUser;
   songsInPlaylist: ISong[] = [];
-  applicationUsers:IApplicationUser[] = [];
-  searchedApplicationUsers:IApplicationUser[] = [];
-  response:any;
+  applicationUsers: IApplicationUser[] = [];
+  searchedApplicationUsers: IApplicationUser[] = [];
+  response: any;
 
 
-  constructor(private songService: SongService, private playlistService: PlaylistService,private reviewService:ReviewService,
-    private userService:UserService,public dialog: MatDialog, private route: ActivatedRoute, private _bottomSheet: MatBottomSheet) {
+  constructor(private songService: SongService, private playlistService: PlaylistService, private reviewService: ReviewService,
+    private userService: UserService, public dialog: MatDialog, private route: ActivatedRoute, private _bottomSheet: MatBottomSheet) {
   }
 
+  //Method to open bottomsheet to display logged-in user playlists to add songs
   openBottomSheet(songId: string): void {
     this._bottomSheet.open(AddToPlaylistBottomsheet, {
       data: {
         playlists: this.playlists,
         songId: songId,
-        loggedInUser:this.authUser
+        loggedInUser: this.authUser
       }
     });
   }
@@ -57,38 +58,40 @@ export class SongsListComponent implements OnInit {
   }
   set searchBy(value: string) {
     this._searchBy = value;
-    if(this.panelOpenState == 'songs')
-    this.searchedSongs = this.searchBy ? this.performSongSearch(this.searchBy) : this.songs;
+    if (this.panelOpenState == 'songs')
+      this.searchedSongs = this.searchBy ? this.performSongSearch(this.searchBy) : this.songs;
 
-    if(this.panelOpenState == 'users')
-    this.searchedApplicationUsers = this.searchBy ? this.performUserSearch(this.searchBy) : this.applicationUsers;
-    
-    if(this.panelOpenState == 'playlists')
-    this.searchedPlaylists = this.searchBy ? this.performPlaylistSearch(this.searchBy) : this.playlists;
+    if (this.panelOpenState == 'users')
+      this.searchedApplicationUsers = this.searchBy ? this.performUserSearch(this.searchBy) : this.applicationUsers;
+
+    if (this.panelOpenState == 'playlists')
+      this.searchedPlaylists = this.searchBy ? this.performPlaylistSearch(this.searchBy) : this.playlists;
   }
 
+  //Perform Search on Song
   performSongSearch(searchBy: string): ISong[] {
     searchBy = searchBy.toLocaleLowerCase();
     return this.songs.filter((song: ISong) =>
-      song.songTitle.toLocaleLowerCase().indexOf(searchBy) !== -1 || 
+      song.songTitle.toLocaleLowerCase().indexOf(searchBy) !== -1 ||
       song.artist.toLocaleLowerCase().indexOf(searchBy) !== -1 ||
       song.album.toLocaleLowerCase().indexOf(searchBy) !== -1 ||
       song.genre.toLocaleLowerCase().indexOf(searchBy) !== -1 ||
-      song.year.toString().indexOf(searchBy) !== -1 );
+      song.year.toString().indexOf(searchBy) !== -1);
   }
 
+   //Perform Search on User
   performUserSearch(searchBy: string): IApplicationUser[] {
     searchBy = searchBy.toLocaleLowerCase();
     return this.applicationUsers.filter((user: IApplicationUser) =>
       user.name.toLocaleLowerCase().indexOf(searchBy) !== -1);
   }
 
+   //Perform Search on Playlists
   performPlaylistSearch(searchBy: string): IPlaylist[] {
     searchBy = searchBy.toLocaleLowerCase();
     return this.playlists.filter((playlist: IPlaylist) =>
-    playlist.listTitle.toLocaleLowerCase().indexOf(searchBy) !== -1);
+      playlist.listTitle.toLocaleLowerCase().indexOf(searchBy) !== -1);
   }
-
 
   showPlaylistDialog(event: Event, listId: string): void {
     var plist = this.getListbyId(listId);
@@ -107,7 +110,7 @@ export class SongsListComponent implements OnInit {
 
   }
 
-  
+//Fetching Playlist object from playlist Id
   getListbyId(listId: string) {
     for (var i = 0; i < this.playlists.length; i++) {
       if (this.playlists[i].listId === listId)
@@ -117,15 +120,16 @@ export class SongsListComponent implements OnInit {
   }
 
 
+//Fetching Song object from Song Id
   getSongById(songId: String): ISong {
-    var i = 0 ;
+    var i = 0;
     for (var i = 0; i < this.songs.length; i++) {
       if (this.songs[i].songId == songId) {
         return this.songs[i];
       }
     }
-    var dummy:ISong = {
-      songId:"",
+    var dummy: ISong = {
+      songId: "",
       songTitle: "",
       artist: "",
       album: "",
@@ -135,13 +139,15 @@ export class SongsListComponent implements OnInit {
       submittedOn: new Date,
       submittedBy: "",
       numberOfRatings: 0,
-      averageRating:0,
-      visibility:false
+      averageRating: 0,
+      visibility: false
     }
 
     return dummy;
   }
 
+  
+//Shows Dialog to add new song
   showAddSongDialog() {
     var user = JSON.parse(localStorage.getItem("socialusers"));
     var newSong: ISong = {
@@ -156,7 +162,7 @@ export class SongsListComponent implements OnInit {
       submittedBy: user.email,
       numberOfRatings: 0,
       averageRating: 0,
-      visibility:true
+      visibility: true
     };
     const dialogRef = this.dialog.open(AddNewSongDialog, {
       width: '400px',
@@ -168,6 +174,7 @@ export class SongsListComponent implements OnInit {
 
   }
 
+  //Shows Dialog to create new Playlist
   showCreatePlaylistDialog(action: string, listId: string) {
     console.log(listId);
     var user = JSON.parse(localStorage.getItem("socialusers"));
@@ -217,30 +224,28 @@ export class SongsListComponent implements OnInit {
 
     });
 
-
   }
   ngOnInit() {
     this.route.params.subscribe(params => {
-    
-      if(params['flag'] == 'true') // (+) converts string 'id' to a number
+
+      if (params['flag'] == 'true') 
         this.isAuth = true;
       else
-      this.isAuth = false;
+        this.isAuth = false;
 
-      if(params['isadmin'] == 'true')
+      if (params['isadmin'] == 'true')
         this.isAdmin = true;
-       else
+      else
         this.isAdmin = false;
 
-     
-      console.log( this.isAuth , this.isAdmin);
+
+      console.log(this.isAuth, this.isAdmin);
       this.authUser = JSON.parse(localStorage.getItem("socialusers"));
       console.log(this.authUser);
-      // In a real app: dispatch action to load the details here.
     });
 
 
-    if(this.isAdmin){
+    if (this.isAdmin) {
       this.songService.getAllSongsForAdmin().subscribe({
         next: songs => {
           this.songs = songs;
@@ -250,45 +255,46 @@ export class SongsListComponent implements OnInit {
       });
 
 
-      this.userService.getAllUsers().subscribe((res)=>{
-       this.response = res;
+      this.userService.getAllUsers().subscribe((res) => {
+        this.response = res;
         console.log(this.response);
-        for(var i=0;i< this.response.length;i++){
-          if(this.response[i]._id != this.authUser.userId ){
-          if( this.response[i].method == 'local' ){
-              var appuser:IApplicationUser = {
-                userId:this.response[i]._id,
-                method:"local",
+        for (var i = 0; i < this.response.length; i++) {
+          if (this.response[i]._id != this.authUser.userId) {
+            if (this.response[i].method == 'local') {
+              var appuser: IApplicationUser = {
+                userId: this.response[i]._id,
+                method: "local",
                 name: this.response[i].local.name,
-                email:this.response[i].local.email,
-                role:this.response[i].role,
-                status:this.response[i].status
+                email: this.response[i].local.email,
+                role: this.response[i].role,
+                status: this.response[i].status
               }
-    
-              this.applicationUsers.push(appuser);
-            }
-            else{
-              var appuser:IApplicationUser = {
-                userId:this.response[i]._id,
-                method:"facebook",
-                name: this.response[i].facebook.name,
-                email:this.response[i].facebook.email,
-                role:this.response[i].role,
-                status:this.response[i].status
-              }
-              this.applicationUsers.push(appuser);
-            }
-              
 
-        }}
+              this.applicationUsers.push(appuser);
+            }
+            else {
+              var appuser: IApplicationUser = {
+                userId: this.response[i]._id,
+                method: "facebook",
+                name: this.response[i].facebook.name,
+                email: this.response[i].facebook.email,
+                role: this.response[i].role,
+                status: this.response[i].status
+              }
+              this.applicationUsers.push(appuser);
+            }
+
+
+          }
+        }
         console.log(this.applicationUsers);
         this.searchedApplicationUsers = this.applicationUsers;
 
-        });
+      });
 
-    
 
-    }else{
+
+    } else {
       this.songService.getSongs().subscribe({
         next: songs => {
           this.songs = songs;
@@ -299,9 +305,6 @@ export class SongsListComponent implements OnInit {
 
     }
 
-    
-
-
 
     var user = JSON.parse(localStorage.getItem("socialusers"));
     if (user) {
@@ -310,7 +313,6 @@ export class SongsListComponent implements OnInit {
         next: playlists => {
           this.playlists = playlists;
           this.searchedPlaylists = this.playlists;
-          // this.searchedSongs = this.songs;
         },
         error: err => this.errorMessage = err
       });
@@ -320,14 +322,14 @@ export class SongsListComponent implements OnInit {
         next: playlists => {
           this.playlists = playlists;
           this.searchedPlaylists = this.playlists;
-          // this.searchedSongs = this.songs;
         },
         error: err => this.errorMessage = err
       });
     }
 
-
   }
+
+  //Service call to show/hide playlist
   togglePlaylistVisibility(action: string, playlistId: string) {
     var visibility: boolean;
     if (action == "hide")
@@ -345,6 +347,7 @@ export class SongsListComponent implements OnInit {
     });
   }
 
+  //Service call to show/hide playlist by Admin
   toggleSongVisibility(action: string, songId: string) {
     var visibility: boolean;
     if (action == "hide")
@@ -353,66 +356,65 @@ export class SongsListComponent implements OnInit {
     else
       visibility = true
 
-   // console.log("playlist id is" + playlistId);
     this.songService.toggleVisibility(visibility, songId).subscribe(res => {
       if (res && res.status == 200) {
         console.log(res.status);
         this.getSongById(songId).visibility = visibility;
-     
+
       }
     });
   }
-  toggleUserStatus(action: string, user: IApplicationUser){
-// console.log("playlist id is" + playlistId);
-  this.userService.toggleStatus(action, user).subscribe(res => {
-  if (res && res.status == 200) {
-    console.log(res.status);
-    this.applicationUsers[this.applicationUsers.findIndex(x => x.userId == user.userId)].status = action;
-  }
-});
-}
 
-toggleAdminAccess(action: string, user: IApplicationUser){
-  // console.log("playlist id is" + playlistId);
+  //Service call to activate/deactivate user
+  toggleUserStatus(action: string, user: IApplicationUser) {
+   this.userService.toggleStatus(action, user).subscribe(res => {
+      if (res && res.status == 200) {
+        console.log(res.status);
+        this.applicationUsers[this.applicationUsers.findIndex(x => x.userId == user.userId)].status = action;
+      }
+    });
+  }
+
+  //Service call to grant/revoke admin permissions to user
+  toggleAdminAccess(action: string, user: IApplicationUser) {
     this.userService.toggleAccess(action, user).subscribe(res => {
-    if (res && res.status == 200) {
-      console.log(res.status);
-      this.applicationUsers[this.applicationUsers.findIndex(x => x.userId == user.userId)].role = action;
-    }
-  });
+      if (res && res.status == 200) {
+        console.log(res.status);
+        this.applicationUsers[this.applicationUsers.findIndex(x => x.userId == user.userId)].role = action;
+      }
+    });
   }
 
-
-  deleteSong(songId:string){
-
-    if(this.getSongById(songId).numberOfRatings>0){
+//Service call to delete song using song ID
+  deleteSong(songId: string) {
+    if (this.getSongById(songId).numberOfRatings > 0) {
       this.reviewService.deleteReviews(songId).subscribe(res => {
         if (res && res.status == 200) {
           console.log(res.status);
-       }
+        }
       });
     }
 
     this.songService.deleteSong(songId).subscribe(res => {
       if (res && res.status == 200) {
-       this.songs.splice(this.songs.findIndex(x => x.songId == songId),1);
-     }
+        this.songs.splice(this.songs.findIndex(x => x.songId == songId), 1);
+      }
     });
 
   }
 
   onPlaylistPanelSelected(event: MatTabChangeEvent) {
 
-        if (event.index == 0 )
-        this.panelOpenState = 'songs';
-    
-        if (event.index == 1 )
-        this.panelOpenState = 'playlists';
+    if (event.index == 0)
+      this.panelOpenState = 'songs';
 
-        if (event.index == 2 )
-        this.panelOpenState = 'users';
+    if (event.index == 1)
+      this.panelOpenState = 'playlists';
 
-console.log(this.panelOpenState);
+    if (event.index == 2)
+      this.panelOpenState = 'users';
+
+    console.log(this.panelOpenState);
 
   }
 

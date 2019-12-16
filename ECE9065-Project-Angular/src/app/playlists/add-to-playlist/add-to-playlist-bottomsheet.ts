@@ -14,7 +14,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
   playlistsToshow:IPlaylist[] = [];
  
    ngOnInit(): void {
-    console.log(this.data);
+   //Getting playlists that are created by Logged in User
     for(var i = 0; i < this.data.playlists.length; i ++){
       if(this.data.playlists[i].createdBy == this.data.loggedInUser.email){
         console.log(this.data.playlists[i].listTitle);
@@ -29,6 +29,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
       private playlistService:PlaylistService,
       @Inject(MAT_BOTTOM_SHEET_DATA) public data: IAddToPlaylistData) {}
   
+     //Method to add song in user selected playlist
       addSongToPlaylist(playlist:IPlaylist){
           playlist.songs.push(this.data.songId);
          
@@ -37,10 +38,11 @@ import {MatSnackBar} from '@angular/material/snack-bar';
             this.openSnackBar("Song Added!","OK");
           });   
       }
-
+      
+      //Method to open Snackbar
       openSnackBar(message: string, action: string) {
         this._snackBar.open(message, action, {
-          duration: 2000,
+          duration: 4000,
         });
       }
   }

@@ -10,7 +10,7 @@
         <input matInput type="password" [formControl]="password" required>  
         <mat-error *ngIf="password.invalid">{{getPasswordMessage()}}</mat-error>        
 </mat-form-field>
-<button mat-raised-button [disabled]="(!email.valid && !password.required)"  class= "submit-button" (click) = 'submit()'>Submit</button>
+<button mat-raised-button [disabled]="!(email.valid && !password.required)"  class= "submit-button" (click) = 'submit()'>Submit</button>
 <span> or Login With</span>
 <button mat-raised-button class="facebook-button" (click)="socialSignIn('facebook')" >Facebook</button>
 <hr>
