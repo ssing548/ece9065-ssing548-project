@@ -6,42 +6,84 @@ const passport = require('passport');
 const passportConfig = require("../config/passport-setup");
 const Playlist = require('../models/playlist');
 const mongoose = require("mongoose");
-
+const Joi = require('joi');
 
 /*Route to add Playlist */
 router.put('/auth/addplaylist',passport.authenticate('jwt',{session:false}),(req,res)=>{
    console.log("addplaylist");
-   
-   var newPlaylist = new Playlist({
-    listId: new mongoose.Types.ObjectId(),
-    listTitle: req.body.listTitle,
-    listDesc: req.body.listDesc,
-    createdOn: req.body.createdOn,
-    createdBy: req.body.createdBy,
-    visibility: req.body.visibility,
-    songs: req.body.songs
-   });
-   
-   newPlaylist.save().then((newplaylist)=>{
-    
-       res.status(200).json(newplaylist);
-   })
+
+   const joiSchema = Joi.object().keys({
+    'listId' : Joi.string().allow("", null),
+    'listTitle' : Joi.string().trim().required(),
+    'listDesc' : Joi.string().trim().required(),
+    'createdOn' : Joi.date(),
+    'createdBy' : Joi.string().trim().required(),
+    'visibility': Joi.boolean().required(),
+    'songs' : Joi.array().optional()
+});
+
+Joi.validate(req.body,joiSchema,(err,results)=>{
+    if(err) {
+        console.log('error is '+err);
+        res.status(400).json(err);
+    }
+    else {
+
+        var newPlaylist = new Playlist({
+            listId: new mongoose.Types.ObjectId(),
+            listTitle: req.body.listTitle,
+            listDesc: req.body.listDesc,
+            createdOn: req.body.createdOn,
+            createdBy: req.body.createdBy,
+            visibility: req.body.visibility,
+            songs: req.body.songs
+           });
+           
+           newPlaylist.save().then((newplaylist)=>{
+            
+               res.status(200).json(newplaylist);
+           })
+    }})
+  
 })
 
 /*Route to edit Playlist */
 router.post('/auth/editplaylist',passport.authenticate('jwt',{session:false}),(req,res)=>{
    
-    Playlist.update({'listId':req.body.listId},{$set:{
-        listTitle: req.body.listTitle,
-        listDesc: req.body.listDesc,
-        createdOn: req.body.createdOn,
-        createdBy: req.body.createdBy,
-        visibility: req.body.visibility,
-        songs: req.body.songs
-    }}).then(()=>{
-      
-        res.status(200).send();
-    })
+    const joiSchema = Joi.object().keys({
+        'listId' : Joi.string().allow("", null),
+        'listTitle' : Joi.string().trim().required(),
+        'listDesc' : Joi.string().trim().required(),
+        'createdOn' : Joi.date(),
+        'createdBy' : Joi.string().trim().required(),
+        'visibility': Joi.boolean().required(),
+        'songs' : Joi.array().optional(),
+        '__v' : Joi.number().integer().optional(),
+        '_id' : Joi.string().optional()
+
+    });
+    Joi.validate(req.body,joiSchema,(err,results)=>{
+        if(err) {
+            console.log('error is '+err);
+            res.status(400).json(err);
+        }
+        else {
+            Playlist.update({'listId':req.body.listId},{$set:{
+                listTitle: req.body.listTitle,
+                listDesc: req.body.listDesc,
+                createdOn: req.body.createdOn,
+                createdBy: req.body.createdBy,
+                visibility: req.body.visibility,
+                songs: req.body.songs
+            }}).then(()=>{
+              
+                res.status(200).send();
+            })
+
+        }})
+    
+
+  
  })
  
 /*Route to change visbility of Playlist */

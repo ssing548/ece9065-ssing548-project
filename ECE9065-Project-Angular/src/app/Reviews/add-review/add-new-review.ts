@@ -35,7 +35,15 @@ export class AddReviewDialog {
 
         }
         this.data.allReviews.push(addedReview);
-        this.data.avgRating = Math.round((this.data.avgRating * (this.data.allReviews.length - 1) + this.data.newReview.rating) / this.data.allReviews.length);
+        console.log(this.data.avgRating);
+        if(this.data.allReviews.length == 1){
+          this.data.avgRating = Math.round(((this.data.avgRating * (this.data.allReviews.length - 1)) + this.data.newReview.rating) / this.data.allReviews.length);
+        }
+        else{
+          this.data.avgRating = this.data.newReview.rating;
+        }
+       
+        console.log(this.data.avgRating);
       }
 
     }, error => {

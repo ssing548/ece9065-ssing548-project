@@ -60,6 +60,7 @@ export class ReviewComponent implements OnInit {
     this.reviewService.getReviews(this.songId).subscribe({
       next: reviews => {
         this.reviews = reviews;
+        if(this.reviews.length>0)
         this.calculateAvgRating();
       },
       error: err => this.errorMessage = err

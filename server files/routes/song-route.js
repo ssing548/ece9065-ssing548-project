@@ -99,24 +99,6 @@ router.post('/auth/changevisibility', passport.authenticate('jwt', { session: fa
     })
 });
 
-/*Route to delete Song */
-router.delete("/auth/deleteSong", passport.authenticate('jwt', { session: false }), (req, res) => {
-
-
-    Song.deleteOne({ songId: req.body.songId })
-        .then(data => {
-            if (data)
-                res.status(200).send();
-            else
-                res.status(404).send();
-        })
-        .catch(err => {
-
-            res.json({ message: err });
-        });
-});
-
-
 
 
 module.exports = router;
