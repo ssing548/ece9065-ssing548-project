@@ -14,9 +14,8 @@
     <div>
       <h3 class="filter">Filter: Most Reviewd Songs</h3>
       <mat-accordion>
-
-        <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false"
-          *ngFor='let song of searchedSongs'>
+        <ng-container  *ngFor='let song of searchedSongs  | slice:0:10; let i=index'>
+        <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false"  *ngIf='11>i'>
           <mat-expansion-panel-header>
 
             <mat-panel-title class="title">
@@ -46,7 +45,7 @@
           <app-review [songId]='song.songId' [isAuth]='isAuth'></app-review>
 
         </mat-expansion-panel>
-
+      </ng-container>
       </mat-accordion>
     </div>
   </mat-tab>
