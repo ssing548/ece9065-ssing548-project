@@ -3,10 +3,7 @@
  const app = express();
  const mongoose = require("mongoose");
  const bodyParser = require("body-parser");
-// const passportSetup = require("./config/passport-setup");
  const keys = require ("./config/keys");
-// const cookieSession = require("cookie-session");
-// const passport = require('passport');
 
 mongoose.connect(keys.mongodb.dbURI,
 { useNewUrlParser: true },
@@ -18,15 +15,7 @@ mongoose.connect(keys.mongodb.dbURI,
 });
 
 app.use(bodyParser.json());
-// app.use(cookieSession({
-//     maxAge: 24* 60 *60 *1000,
-//     keys: [keys.session.cookieKey]
-// }));
 
-// app.use(passport.initialize());
-// app.use(passport.session());
-
-// app.use('/', express.static('view'));
  
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from

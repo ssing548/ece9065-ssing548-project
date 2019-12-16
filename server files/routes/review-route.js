@@ -8,10 +8,9 @@ const Review = require('../models/review');
 const Song = require('../models/songs');
 const mongoose = require("mongoose");
 
+/*Route to add new Review */
 router.put('/auth/addreview',passport.authenticate('jwt',{session:false}),(req,res)=>{
-   console.log("addreview");
-   //const email = req.body.email;
-   //console.log(req.body.songTitle);
+   
    var newReview = new Review({
     reviewId: new mongoose.Types.ObjectId(),
     songId: req.body.songId,
@@ -23,13 +22,11 @@ router.put('/auth/addreview',passport.authenticate('jwt',{session:false}),(req,r
    });
    
    newReview.save().then((newreview)=>{
-       //res.json({user: 'created'});
-       //const token = signToken(newuser);
+      
        Song.findOneAndUpdate({'songId':req.body.songId},{$inc: {
         numberOfRatings: 1 
       }}).then(()=>{
-        //res.json({user: 'created'});
-        //const token = signToken(newuser);
+      
       
     })
     .catch(err=>{
@@ -41,14 +38,9 @@ router.put('/auth/addreview',passport.authenticate('jwt',{session:false}),(req,r
     res.json({ message: err });
    });
 
-
-
-   
-  
-
 });
 
-
+/*Route to get  Reviews */
 router.get("/getreviews", (req, res) => {
     Review.find().then(data => {
         res.json(data);
@@ -59,9 +51,9 @@ router.get("/getreviews", (req, res) => {
 
 });
 
-
+/*Route to delete all Reviews */
 router.delete("/auth/deleteAllReviews",passport.authenticate('jwt',{session:false}),(req,res)=>{
-    console.log(req.body);
+   
 
     Review.deleteMany({  songId: req.body.songId })
             .then(data => {

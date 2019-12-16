@@ -1,127 +1,115 @@
- const passport = require("passport");
- const jwtStarategy = require("passport-jwt").Strategy;
- const LocalStarategy = require("passport-local").Strategy;
- const GooglePlusTokenStarategy = require("passport-google-plus-token");
- const FacebookTokenStarategy = require("passport-facebook-token");
- const {ExtractJwt} = require("passport-jwt");
- const keys = require ("./keys");
- const User  = require("../models/user");
+const passport = require("passport");
+const jwtStarategy = require("passport-jwt").Strategy;
+const LocalStarategy = require("passport-local").Strategy;
+const FacebookTokenStarategy = require("passport-facebook-token");
+const { ExtractJwt } = require("passport-jwt");
+const keys = require("./keys");
+const User = require("../models/user");
 
-
- passport.use(new jwtStarategy({
-    jwtFromRequest:ExtractJwt.fromHeader('authorization'),
+/*Passport Strategy to Validate token */
+passport.use(new jwtStarategy({
+    jwtFromRequest: ExtractJwt.fromHeader('authorization'),
     secretOrKey: keys.jwt.secret
-    },(payLoad,done)=>{
+}, (payLoad, done) => {
     try {
         //find user in token
-        console.log("validating");
+
         const user = User.findById(payLoad.sub);
         //if user doesnt exist, handle it
-        
-        if(!user){
-            return done(null,false);
+
+        if (!user) {
+            return done(null, false);
         }
-        
+
         //otherwise return user
-        done(null,user);
+        done(null, user);
     } catch (error) {
-        console.log("validating");
-        done(error,false);
+
+        done(error, false);
     }
 
- }));
+}));
 
-
-passport.use('facebookToken',new FacebookTokenStarategy({
-    clientID : keys.facebook.clientID,
-    clientSecret : keys.facebook.clientSecret
-},  (accessToken,refreshToken,profile,done)=>{
+/*Passport Strategy for Facebook user */
+passport.use('facebookToken', new FacebookTokenStarategy({
+    clientID: keys.facebook.clientID,
+    clientSecret: keys.facebook.clientSecret
+}, (accessToken, refreshToken, profile, done) => {
     try {
-        console.log("accessToken"+accessToken);
-        console.log("refreshToken"+refreshToken);
-        console.log("profilep"+profile.emails[0].value);
 
+        const existingUser = User.findOne({ "facebook.id": profile.id }).then((res) => {
 
-        const existingUser =  User.findOne({"facebook.id": profile.id}).then((res)=>{
+            if (res) {
 
-            if(res){
-                console.log("user exists in db");
-                return done(null,res);
+                return done(null, res);
             }
-           
-               //if new account
-            console.log("user doesnt exists in db, creating");
-            const newUser = new User({
-            method:'facebook',
-            facebook:{
-                id:profile.id,
-                email:profile.emails[0].value,
-                name:profile.name.givenName
-            },
-            role:"non-admin",
-            status:"activated"
-        });
-    
-      newUser.save().then((res)=>{
-      console.log("inside");
-      if(res) {
-         done(null, res);
-      }
-       
-       }).catch((err)=>{
-           console.log("promise error"+err);
-       }
-       );
 
-        }).catch((err)=>{
-            console.log("Promise rejected"+err);
+            //if new account
+            const newUser = new User({
+                method: 'facebook',
+                facebook: {
+                    id: profile.id,
+                    email: profile.emails[0].value,
+                    name: profile.name.givenName
+                },
+                role: "non-admin",
+                status: "activated"
+            });
+
+            newUser.save().then((res) => {
+
+                if (res) {
+                    done(null, res);
+                }
+
+            }).catch((err) => {
+                console.log("promise error" + err);
+            }
+            );
+
+        }).catch((err) => {
+            console.log("Promise rejected" + err);
         });
-        
-    
-     
-        // if successful, return the new user
-       
-       
-     
+
     } catch (error) {
-        console.log("got in eror");
-        done(error,false,error.message);
+
+        done(error, false, error.message);
         next(err);
     }
 
 
 }));
 
-
- passport.use('local',new LocalStarategy({
+/*Passport Strategy to Validate Local User */
+passport.use('local', new LocalStarategy({
     usernameField: 'email'
- },async (email,password,done)=>{
+}, async (email, password, done) => {
 
     try {
-         //find user given mail
-         const user = await User.findOne({"local.email":email});
+        //find user given mail
+        const user = await User.findOne({ "local.email": email });
 
-         //if not handle it
-         if(!user){ 
-           
-            return done(null,false);
-         }
-        
-         //if foound check if coredct password
-         //console.log("user is " + user);
-         const isMatch = await user.isValidPassword(password);
-         //if not handle it
-         console.log(isMatch);
-         if(!isMatch){
-             return done(null,false);
-         }
- 
-         //otherwise return user
-         done(null,user);
+        //if not handle it
+        if (!user) {
+
+            return done(null, false);
+        }
+
+        //if foound check if coredct password
+
+        const isMatch = await user.isValidPassword(password);
+        //if not handle it
+
+        if (!isMatch) {
+            return done(null, false);
+        }
+
+        //otherwise return user
+        done(null, user);
     } catch (error) {
-        console.log('error');
-        done(error,false);
+
+        done(error, false);
     }
-       
- }));
+
+}));
 

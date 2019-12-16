@@ -43,6 +43,7 @@
     }
 );
 
+/*Function checks user password */
 userSchema.methods.isValidPassword = function(newPassword){
     try {
        return bcrypt.compare(newPassword,this.local.password)
@@ -51,6 +52,7 @@ userSchema.methods.isValidPassword = function(newPassword){
     }
 };
 
+/*Converts password into hash using Bcrypt */
 userSchema.pre('save',async function(next){
     try {
         if(this.method != 'local'){
