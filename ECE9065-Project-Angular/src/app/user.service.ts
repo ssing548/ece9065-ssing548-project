@@ -8,13 +8,17 @@ import { IApplicationUser } from './application-users';
   providedIn: 'root'
 })
 export class UserService {
+  url;
+  constructor(private http: HttpClient) { }
+
+
   toggleStatus(action: string, user: IApplicationUser) :Observable<any>  {
     var data = {
       "status": action,
       "user":user
     };
     console.log(data);
-    return this.http.post('http://localhost:3000/auth/user/changeStatus',data, { observe: 'response' });
+    return this.http.post('/auth/user/changeStatus',data, { observe: 'response' });
 }
 
 toggleAccess(action: string, user: IApplicationUser) :Observable<any>  {
@@ -23,27 +27,20 @@ toggleAccess(action: string, user: IApplicationUser) :Observable<any>  {
     "user":user
   };
   console.log(data);
-  return this.http.post('http://localhost:3000/auth/user/changeRole',data, { observe: 'response' });
+  return this.http.post('/auth/user/changeRole',data, { observe: 'response' });
 }
-  url;
-  getSecret() {
-    this.url = 'http://localhost:3000/auth/secret';
-    return this.http.get(this.url);
-  }
- 
   
-  constructor(private http: HttpClient) { }
 
   Savesresponse(response)
       {
-        this.url =  'http://localhost:3000/auth/oauth/facebook';
+        this.url =  '/auth/oauth/facebook';
         return this.http.post(this.url,{
           "access_token": response.token
         });
       }
 
       verifyUser(email: string, password: string):Observable<any>  {
-        this.url = 'http://localhost:3000/auth/signin';
+        this.url = '/auth/signin';
         return this.http.post(this.url,{
           "email": email,
           "password":password
@@ -52,7 +49,7 @@ toggleAccess(action: string, user: IApplicationUser) :Observable<any>  {
     
       
       getAllUsers():Observable<any> {
-        return this.http.get<any>('http://localhost:3000/auth/getusers')
+        return this.http.get<any>('/auth/getusers')
       .pipe(
         tap(data => console.log('All: ' + JSON.stringify(data)))
        
@@ -61,7 +58,7 @@ toggleAccess(action: string, user: IApplicationUser) :Observable<any>  {
 }
 
   userSignup(name:string,email:string,password:string):Observable<any> {
-    this.url = 'http://localhost:3000/auth/signup';
+    this.url = '/auth/signup';
     return this.http.put(this.url,{
       "name": name,
       "email": email,

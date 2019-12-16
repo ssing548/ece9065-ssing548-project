@@ -13,7 +13,7 @@ export class SongService {
 
   /*Method to fetch all songs from Admin View*/
   getAllSongsForAdmin(): Observable<ISong[]>{
-    return this.http.get<ISong[]>('http://localhost:3000/song/auth/songsForAdmin')
+    return this.http.get<ISong[]>('/song/auth/songsForAdmin')
       .pipe(
         tap(data => console.log('All: ' + JSON.stringify(data))),
         map(data => data.sort((a,b)=> b.numberOfRatings - a.numberOfRatings))
@@ -23,7 +23,7 @@ export class SongService {
 
   /*Method to delete song from Database using Song Id*/
   deleteSong(songId: string) :Observable<any> {
-    return this.http.request("DELETE",'http://localhost:3000/song/auth/deleteSong',{
+    return this.http.request("DELETE",'/song/auth/deleteSong',{
       headers: new HttpHeaders({
           
       }),
@@ -37,19 +37,19 @@ export class SongService {
       "songId":songId
     };
     
-    return this.http.post('http://localhost:3000/song/auth/changevisibility',data, { observe: 'response' });
+    return this.http.post('/song/auth/changevisibility',data, { observe: 'response' });
   }
 
   /*Method to add new Song into Database*/
   addNewSong(newSong: ISong):Observable<any> {
 
-    return this.http.put('http://localhost:3000/song/auth/addsong',newSong);
+    return this.http.put('/song/auth/addsong',newSong);
   }
  
 /*Method to get songs and sorting them on the basis of number of Reviews*/
   getSongs(): Observable<ISong[]>{
 
-    return this.http.get<ISong[]>('http://localhost:3000/song/getsongs')
+    return this.http.get<ISong[]>('/song/getsongs')
       .pipe(
         tap(data => console.log('All: ' + JSON.stringify(data))),
         map(data => data.sort((a,b)=> b.numberOfRatings - a.numberOfRatings))

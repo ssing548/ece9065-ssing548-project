@@ -14,7 +14,7 @@ export class ReviewService {
 
  //Method to Delete all reviews for a song from Database
   deleteReviews(songId: string):Observable<any> {
-    return this.http.request("DELETE",'http://localhost:3000/review/auth/deleteAllReviews',{
+    return this.http.request("DELETE",'/review/auth/deleteAllReviews',{
       headers: new HttpHeaders({ }),
     body:{songId}, observe: 'response' });
     
@@ -22,7 +22,7 @@ export class ReviewService {
   
   //Method to Fetch all reviews for a song from Database and sort them by Date
   getReviews(songId:String): Observable<IReview[]>{
-    return this.http.get<IReview[]>('http://localhost:3000/review/getreviews')
+    return this.http.get<IReview[]>('/review/getreviews')
       .pipe(
         tap(data => console.log('All: ' + JSON.stringify(data))),
        map(data => data.filter( data  => data.songId == songId)),
@@ -34,7 +34,7 @@ export class ReviewService {
 //Method to add new reviews for a song into Database
   addNewReview(newReview: IReview):Observable<any> {
     console.log(newReview);
-    return this.http.put('http://localhost:3000/review/auth/addreview',newReview);
+    return this.http.put('/review/auth/addreview',newReview);
   }
 }
 
